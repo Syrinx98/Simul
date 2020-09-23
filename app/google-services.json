@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "436100610708",
+    "firebase_url": "https://simul-7f73d.firebaseio.com",
+    "project_id": "simul-7f73d",
+    "storage_bucket": "simul-7f73d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436100610708:android:d0256fb6b75f3cfc551281",
+        "android_client_info": {
+          "package_name": "sanchez.miguel.alfonso.simul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436100610708-alahcvhefjqp6rdrvtnnc298negfckgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sanchez.miguel.alfonso.simul",
+            "certificate_hash": "6e077ec42ffc669ebfa76402c6b0967814bad3d2"
+          }
+        },
+        {
+          "client_id": "436100610708-gfrks3cgfganfa8tgj3ic54us9kempjm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWxYdYaaHOqCDwFopWJUs-9TQk2w3CzpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436100610708-gfrks3cgfganfa8tgj3ic54us9kempjm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

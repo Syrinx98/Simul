@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView testo = findViewById(R.id.testo_principale);
         testo.setText("Buonasera git!");
+
     }
 
 
