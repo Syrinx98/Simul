@@ -84,20 +84,7 @@ public class GoogleSignInActivity extends App {
         }
     }
 
-    //controllo se ho un utente connesso attualmente
-    protected boolean check_connection() {
-        return (mAuth.getCurrentUser() != null);
-    }
 
-    //controllo se mi sono già loggato in precedenza
-    protected boolean check_login() {
-        return prefs.getBoolean("hasLogin", false);
-    }
-
-    //controllo se mi sono già registrato in precedenza
-    protected boolean check_registration() {
-        return prefs.getBoolean("hasRegistration", false);
-    }
 
 
     //Metodo all'onclick del bottone

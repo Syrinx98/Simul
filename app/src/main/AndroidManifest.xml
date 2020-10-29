@@ -11,6 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".RegisterActivity"></activity>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat"
+            />
+
         <activity android:name=".MainActivity" />
         <activity
             android:name=".GoogleSignInActivity"
@@ -22,5 +29,7 @@
             </intent-filter>
         </activity>
     </application>
+
+
 
 </manifest>

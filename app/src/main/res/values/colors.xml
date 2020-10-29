@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="Bianco">#FFFFFF</color>
+    <color name="Nero">#000000</color>
+    <color name="Rosso">#CB3234</color>
+    <color name="Verde">#66FF00</color>
+    <color name="Grigietto">#CCCCCC</color>
 </resources>
