@@ -1,19 +1,29 @@
 package sanchez.miguel.alfonso.simul;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,8 +58,14 @@ abstract class App extends AppCompatActivity {
     public static SharedPreferences.Editor editor;
     public static FirebaseAuth mAuth;
     public static FirebaseUser User;
+
+    //Informazioni Utente
     public static String current_user_id;
     public static String data_attuale, ora_attuale, data_e_ora;
+    public static String data_creazione_account;
+    public static String link_immmagine_dentro_db;
+    public static String nickname;
+    public static String email;
 
     //Variabili per il client in locale di google sing in
     public GoogleSignInOptions gso;
@@ -60,9 +76,9 @@ abstract class App extends AppCompatActivity {
 
     //Oggetti pubblici
     public static ProgressDialog public_progressdialog;
+    public static Dialog dialog;
 
     //Database References : storage
-    public static String link_immmagine_dentro_db;
     public static StorageReference image_storage, immagine_utente;
 
     //Database References : realtime database
@@ -109,6 +125,16 @@ abstract class App extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) { }
         });
+    }
+
+    protected void initilize_google_variables(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(web_client_for_google_sign_in)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
+        RC_SIGN_IN = 1;
+        signInIntent = mGoogleSignInClient.getSignInIntent();
     }
 
     protected boolean nick_check(Context context, EditText NickText){
@@ -274,6 +300,96 @@ abstract class App extends AppCompatActivity {
             }
         });
     }
+
+
+    protected void sloggami(Context context) {
+        initilize_google_variables();
+        if (mGoogleSignInClient != null){
+            mGoogleSignInClient.signOut();
+        }
+        if (mAuth != null){
+            mAuth.signOut();
+        }
+        FirebaseUser user = Objects.requireNonNull(mAuth).getCurrentUser();
+        if (user == null) {
+            //Aggiorno SharedPreferences
+            editor.putBoolean("hasLogin", false);
+            editor.putBoolean("CONNECTION", false);
+            editor.putBoolean("hasRegistration", false);
+            editor.apply();
+
+            Toast.makeText(context, "Sloggato correttamente", Toast.LENGTH_SHORT).show();
+
+            ((Activity) context).finish();
+        } else {
+            Toast.makeText(context, "Non sono riuscito a sloggarmi", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    protected void delete_account(final Context context){
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.popup_layout);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        // set the custom dialog components - text, image and button
+        ImageButton confirm =  dialog.findViewById(R.id.confirm_delete_calibration);
+        TextView t = dialog.findViewById(R.id.calibration_name_calibration_lol);
+
+        t.setText("Sicuro di voler eliminare il tuo account?\ni tuoi dati online andranno persi");
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete_account_from_database(context);
+            }
+        });
+
+        ImageButton no =  dialog.findViewById(R.id.no_delete_calibration);
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    public void delete_account_from_database(final Context context){
+        //riprendo lo user id, in caso di crash le variabili statiche si azzerano
+        prendi_user_id_attuale();
+        CurrentUserRef = UsersRef.child(current_user_id);
+
+        CurrentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                snapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        sloggami(context);
+                        dialog.dismiss();
+                    }
+                });
+
+                CurrentUserRef.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                CurrentUserRef.removeEventListener(this);
+            }
+        });
+
+
+        dialog.dismiss();
+    }
+
+
+
+
+
+
+
+
 
 
 }

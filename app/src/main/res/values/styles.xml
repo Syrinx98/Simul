@@ -25,4 +25,9 @@
         <item name="colorControlActivated">#2FFF00</item>
     </style>
 
+    <style name="CustomProgressBarTheme">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:progressBarStyle">@style/Widget.AppCompat.ProgressBar</item>
+    </style>
+
 </resources>

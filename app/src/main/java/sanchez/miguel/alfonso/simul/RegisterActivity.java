@@ -95,6 +95,7 @@ public class RegisterActivity extends App {
 
     }
 
+    //se premo il pulsante per tornare indietro, esce dall'app.
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
@@ -121,9 +122,6 @@ public class RegisterActivity extends App {
             }
         });
     }
-
-
-
 
     void check_and_upload_data(final Context context, EditText nick_editext) {
 

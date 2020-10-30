@@ -43,6 +43,8 @@ public class GoogleSignInActivity extends App {
         //Inizializzo reference ai nodi del database
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        //Variabili per il GoogleSignIn
+        initilize_google_variables();
 
         //Prima ancora di avviare l'activity e settare il layout controllo se sono già registrato.
         if (check_connection() && check_login() && check_registration()) {
@@ -52,14 +54,6 @@ public class GoogleSignInActivity extends App {
         }
         //Non sono registrato o loggato e quindi setuppo l'activity.
         else{
-            //Variabili per il GoogleSignIn
-            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(web_client_for_google_sign_in)
-                    .requestEmail()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
-            RC_SIGN_IN = 1;
-            signInIntent = mGoogleSignInClient.getSignInIntent();
 
             setContentView(R.layout.activity_main);
 
