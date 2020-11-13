@@ -14,9 +14,10 @@ android {
     }
 
     //signing per release key SHA
+
     signingConfigs {
         release {
-            storeFile file("C:\\Users\\alber\\Desktop\\Simul.jks")
+            storeFile file("C:\\Users\\Martin\\Desktop\\RobaIngSw\\Simul.jks")
             storePassword "12345678"
             keyAlias "key1"
             keyPassword "12345678"
@@ -60,5 +61,12 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //frontend Martin
+    def nav_version = "2.3.1"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation 'com.google.android.material:material:1.3.0-alpha03'
+    implementation "androidx.cardview:cardview:1.0.0"
 
 }

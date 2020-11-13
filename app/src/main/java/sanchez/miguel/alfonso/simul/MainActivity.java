@@ -6,13 +6,23 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavHostController;
+import androidx.navigation.ui.AppBarConfiguration;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -20,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Objects;
+
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -32,6 +43,11 @@ public class MainActivity extends App {
     //Views
     ImageView user_img;
     TextView email_textview,nickname_textview,date_textview;
+    AppBarConfiguration mAppBarConfiguration;
+    NavigationView nav;
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawerLayout;
+    NavHostController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,25 +63,77 @@ public class MainActivity extends App {
         download_information(MainActivity.this);
 
         //setto listeners su logout e su delete account
-        listeners_logout_and_delete_account();
+        //listeners_logout_and_delete_account();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        nav = (NavigationView) findViewById(R.id.navmenu);
+        //serve a mantenere le icone png con il loro colore originale, altrimenti android studio le rende monocrome...
+        nav.setItemIconTintList(null);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment temp;
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.menu_home: {
+                        temp = new Home();
+                        break;
+                    }
+                    case R.id.menu_amici: {
+                        temp = new Amici();
+                        break;
+                    }
+                    case R.id.menu_profilo: {
+                        temp = new Profilo();
+                        break;
+                    }
+                    case R.id.menu_impostazioni: {
+                        temp = new Impostazioni();
+                        break;
+                    }
+                    case R.id.menu_info:{
+                        temp = new Info();
+                        break;
+                    }
+                }
+
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,temp).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
     }
+
+    /*
     protected void listeners_logout_and_delete_account(){
-        findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sloggami(MainActivity.this);
             }
         });
 
-        findViewById(R.id.delete_account).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 delete_account(MainActivity.this);
             }
         });
     }
-
+    */
     //se premo il pulsante per tornare indietro, esce dall'app.
     @Override
     public void onBackPressed() {
@@ -123,7 +191,7 @@ public class MainActivity extends App {
                     editor.apply();
 
                     //todo attenzione a questo passaggio, una volta che ho scaricato i dati li passo alla funzione per l'update dell'ui, scrivo a schermo quello che ho scaricato
-                    update_ui_user_information();
+                    //update_ui_user_information();
 
                     connection_countdowntimer.cancel();
                     ciao.dismiss();
@@ -143,6 +211,7 @@ public class MainActivity extends App {
         });
     }
 
+    /*
     private void update_ui_user_information(){
         Picasso.get()
                 .load(link_immmagine_dentro_db)
@@ -156,6 +225,7 @@ public class MainActivity extends App {
         date_textview.setText("Creato il\n" + data_creazione_account);
         nickname_textview.setText(nickname);
 
-
     }
+    */
+
 }
