@@ -23,7 +23,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import java.util.Objects;
 
-public class RegisterActivity extends App {
+public class RegisterActivity extends BaseActivity {
 
     private ImageView user_img;
     private EditText nick_editext;

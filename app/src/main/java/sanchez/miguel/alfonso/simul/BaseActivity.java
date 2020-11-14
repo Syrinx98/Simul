@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-abstract class App extends AppCompatActivity {
+abstract class BaseActivity extends AppCompatActivity {
 
     //Google singIn release key presa dall'api console
     public static final String web_client_for_google_sign_in = "436100610708-gfrks3cgfganfa8tgj3ic54us9kempjm.apps.googleusercontent.com";
@@ -302,86 +302,8 @@ abstract class App extends AppCompatActivity {
     }
 
 
-    protected void sloggami(Context context) {
-        initilize_google_variables();
-        if (mGoogleSignInClient != null){
-            mGoogleSignInClient.signOut();
-        }
-        if (mAuth != null){
-            mAuth.signOut();
-        }
-        FirebaseUser user = Objects.requireNonNull(mAuth).getCurrentUser();
-        if (user == null) {
-            //Aggiorno SharedPreferences
-            editor.putBoolean("hasLogin", false);
-            editor.putBoolean("CONNECTION", false);
-            editor.putBoolean("hasRegistration", false);
-            editor.apply();
-
-            Toast.makeText(context, "Sloggato correttamente", Toast.LENGTH_SHORT).show();
-
-            ((Activity) context).finish();
-        } else {
-            Toast.makeText(context, "Non sono riuscito a sloggarmi", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
-    protected void delete_account(final Context context){
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.popup_layout);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-        // set the custom dialog components - text, image and button
-        ImageButton confirm =  dialog.findViewById(R.id.confirm_delete_calibration);
-        TextView t = dialog.findViewById(R.id.calibration_name_calibration_lol);
-
-        t.setText("Sicuro di voler eliminare il tuo account?\ni tuoi dati online andranno persi");
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                delete_account_from_database(context);
-            }
-        });
-
-        ImageButton no =  dialog.findViewById(R.id.no_delete_calibration);
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
-
-
-    public void delete_account_from_database(final Context context){
-        //riprendo lo user id, in caso di crash le variabili statiche si azzerano
-        prendi_user_id_attuale();
-        CurrentUserRef = UsersRef.child(current_user_id);
-
-        CurrentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                snapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        sloggami(context);
-                        dialog.dismiss();
-                    }
-                });
-
-                CurrentUserRef.removeEventListener(this);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                CurrentUserRef.removeEventListener(this);
-            }
-        });
-
-
-        dialog.dismiss();
-    }
 
 
 

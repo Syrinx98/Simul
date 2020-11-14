@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +25,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Objects;
 
-
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
-public class MainActivity extends App {
+public class MainActivity extends BaseActivity {
 
     private boolean connessione_scadente_comunicata;
     private String welcome_text = "";
@@ -61,9 +56,6 @@ public class MainActivity extends App {
 
         //Scarico le informazioni dell'utente
         download_information(MainActivity.this);
-
-        //setto listeners su logout e su delete account
-        //listeners_logout_and_delete_account();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,23 +109,9 @@ public class MainActivity extends App {
 
     }
 
-    /*
-    protected void listeners_logout_and_delete_account(){
-        findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sloggami(MainActivity.this);
-            }
-        });
 
-        findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                delete_account(MainActivity.this);
-            }
-        });
-    }
-    */
+
+
     //se premo il pulsante per tornare indietro, esce dall'app.
     @Override
     public void onBackPressed() {

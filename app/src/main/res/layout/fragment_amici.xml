@@ -6,10 +6,11 @@
     tools:context=".Amici">
 
     <TextView
+        android:id="@+id/amici"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/menu_amici"
+        android:background="@android:color/holo_green_light"
         android:gravity="center"
-        android:background="@android:color/holo_green_light"/>
+        android:text="@string/menu_amici" />
 
 </FrameLayout>
