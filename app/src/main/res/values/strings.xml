@@ -12,4 +12,6 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+    <string name="text_id_stanza_number">000000</string>
 </resources>

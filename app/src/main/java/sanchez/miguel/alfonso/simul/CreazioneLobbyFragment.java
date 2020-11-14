@@ -1,15 +1,16 @@
 package sanchez.miguel.alfonso.simul;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
+public class CreazioneLobbyFragment extends Fragment {
 
-public class Impostazioni extends Fragment {
-
-    public Impostazioni() {
+    public CreazioneLobbyFragment() {
         // Required empty public constructor
     }
 
@@ -22,6 +23,6 @@ public class Impostazioni extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_impostazioni, container, false);
+        return inflater.inflate(R.layout.fragment_creazione_lobby, container, false);
     }
 }

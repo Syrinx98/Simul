@@ -7,32 +7,41 @@
 
     <fragment
         android:id="@+id/home2"
-        android:name="sanchez.miguel.alfonso.simul.Home"
+        android:name="sanchez.miguel.alfonso.simul.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home2_to_creazioneLobbyFragment"
+            app:destination="@id/creazioneLobbyFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/amici"
-        android:name="sanchez.miguel.alfonso.simul.Amici"
+        android:name="sanchez.miguel.alfonso.simul.AmiciFragment"
         android:label="@string/menu_amici"
         tools:layout="@layout/fragment_amici" />
 
     <fragment
         android:id="@+id/profilo"
-        android:name="sanchez.miguel.alfonso.simul.Profilo"
+        android:name="sanchez.miguel.alfonso.simul.ProfiloFragment"
         android:label="@string/menu_profilo"
         tools:layout="@layout/fragment_profilo" />
 
     <fragment
         android:id="@+id/impostazioni"
-        android:name="sanchez.miguel.alfonso.simul.Impostazioni"
+        android:name="sanchez.miguel.alfonso.simul.ImpostazioniFragment"
         android:label="@string/menu_impostazioni"
         tools:layout="@layout/fragment_impostazioni" />
 
     <fragment
         android:id="@+id/info2"
-        android:name="sanchez.miguel.alfonso.simul.Info"
+        android:name="sanchez.miguel.alfonso.simul.InfoFragment"
         android:label="@string/menu_info"
         tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/creazioneLobbyFragment"
+        android:name="sanchez.miguel.alfonso.simul.CreazioneLobbyFragment"
+        android:label="fragment_creazione_lobby"
+        tools:layout="@layout/fragment_creazione_lobby" />
 
 </navigation>

@@ -41,9 +41,9 @@ import static sanchez.miguel.alfonso.simul.BaseActivity.prefs;
 import static sanchez.miguel.alfonso.simul.BaseActivity.web_client_for_google_sign_in;
 
 
-public class Profilo extends BaseFragment {
+public class ProfiloFragment extends BaseFragment {
 
-    public Profilo() {
+    public ProfiloFragment() {
         // Required empty public constructor
     }
 

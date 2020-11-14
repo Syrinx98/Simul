@@ -8,9 +8,10 @@
     <color name="Rosso">#CB3234</color>
     <color name="Verde">#66FF00</color>
     <color name="Grigietto">#CCCCCC</color>
-
+    <color name="ViolaChiaro">#BB86FC</color>
     <color name="BackDark">#121212</color>
     <color name="AltroDark">#1A1A1A</color>
     <color name="PrimaryWhite">#E1E1E1</color>
     <color name="SecondaryWhite">#A3A3A3</color>
+    <color name="GrigioTextForm">#2F2F2F</color>
 </resources>

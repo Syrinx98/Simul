@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CreazioneLobbyFragment"
+    android:background="@color/AltroDark">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="40dp"
+        android:paddingLeft="40dp"
+        android:paddingBottom="50dp"
+        android:paddingTop="70dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_id_stanza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID stanza: #"
+                    android:textStyle="normal"
+                    android:textSize="20dp"
+                    android:textColor="@color/PrimaryWhite"/>
+
+                <TextView
+                    android:id="@+id/text_id_stanza_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_id_stanza_number"
+                    android:textStyle="normal"
+                    android:textSize="20dp"
+                    android:textColor="@color/PrimaryWhite"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="Dove si va?"
+                app:boxBackgroundColor="@color/GrigioTextForm"
+                android:textColorHint="@color/SecondaryWhite">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:icon="@drawable/ic_outline_person_add"
+                android:text="Invita un amico"
+                android:textSize="12dp"
+                android:textColor="@color/ViolaChiaro"
+                app:iconSize="12dp"
+                app:iconTint="@color/ViolaChiaro"
+                app:strokeColor="@color/GrigioTextForm"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:icon="@drawable/ic_outline_share"
+                android:text="Copia il link condivisione"
+                android:textSize="12dp"
+                android:textColor="@color/ViolaChiaro"
+                app:iconSize="12dp"
+                app:iconTint="@color/ViolaChiaro"
+                app:strokeColor="@color/GrigioTextForm"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            style="@style/Widget.MaterialComponents.Button"
+            android:backgroundTint="@color/ViolaChiaro"
+            android:text="Crea stanza"
+            android:textSize="12dp"
+            android:textColor="@color/Nero"
+            app:icon="@drawable/ic_outline_add"
+            app:iconSize="12dp"
+            app:iconTint="@color/Nero"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="Annulla"
+            android:textSize="12dp"
+            android:textColor="@color/ViolaChiaro"/>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

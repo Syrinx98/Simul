@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
         nav = (NavigationView) findViewById(R.id.navmenu);
         //serve a mantenere le icone png con il loro colore originale, altrimenti android studio le rende monocrome...
@@ -80,23 +81,23 @@ public class MainActivity extends BaseActivity {
 
                 switch (item.getItemId()){
                     case R.id.menu_home: {
-                        temp = new Home();
+                        temp = new HomeFragment();
                         break;
                     }
                     case R.id.menu_amici: {
-                        temp = new Amici();
+                        temp = new AmiciFragment();
                         break;
                     }
                     case R.id.menu_profilo: {
-                        temp = new Profilo();
+                        temp = new ProfiloFragment();
                         break;
                     }
                     case R.id.menu_impostazioni: {
-                        temp = new Impostazioni();
+                        temp = new ImpostazioniFragment();
                         break;
                     }
                     case R.id.menu_info:{
-                        temp = new Info();
+                        temp = new InfoFragment();
                         break;
                     }
                 }
@@ -113,11 +114,12 @@ public class MainActivity extends BaseActivity {
 
 
     //se premo il pulsante per tornare indietro, esce dall'app.
+    /*
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-
+    */
     protected void download_information(final Context context){
         prendi_ora_attuale();
         prendi_user_id_attuale();
