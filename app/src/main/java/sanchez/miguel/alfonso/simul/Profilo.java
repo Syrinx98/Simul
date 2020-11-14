@@ -77,7 +77,7 @@ public class Profilo extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
             //listeners per i tasti
-            view.findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.tasto_logout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     sloggami(getContext());
