@@ -12,4 +12,10 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="menu_gallery">menu</string>
+    <string name="menu_slideshow">slideshow</string>
+    <string name="profile">profile</string>
+    <string name="posts">posts</string>
+    <string name="action_settings">settings</string>
+    <string name="logout">slogout</string>
 </resources>
