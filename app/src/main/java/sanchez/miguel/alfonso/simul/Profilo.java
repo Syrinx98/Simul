@@ -124,7 +124,7 @@ public class Profilo extends BaseFragment {
 
             Toast.makeText(context, "Sloggato correttamente", Toast.LENGTH_SHORT).show();
 
-            ((Activity) context).finish();
+            requireActivity().finish();
         } else {
             Toast.makeText(context, "Non sono riuscito a sloggarmi", Toast.LENGTH_SHORT).show();
         }
