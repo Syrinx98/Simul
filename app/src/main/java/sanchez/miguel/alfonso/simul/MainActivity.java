@@ -111,8 +111,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-
     //se premo il pulsante per tornare indietro, esce dall'app.
     /*
     @Override
@@ -120,6 +118,7 @@ public class MainActivity extends BaseActivity {
         moveTaskToBack(true);
     }
     */
+    
     protected void download_information(final Context context){
         prendi_ora_attuale();
         prendi_user_id_attuale();

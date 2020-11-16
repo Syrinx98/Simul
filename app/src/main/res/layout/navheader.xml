@@ -4,29 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AltroDark"
-    android:padding="20dp"
-    android:orientation="vertical">
-    
-    <ImageView
+    android:paddingTop="50dp"
+    android:paddingBottom="30dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/nav_profile_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/profilepic"/>
+        android:src="@drawable/profilepic" />
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nome_utente"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:textColor="@color/PrimaryWhite"
-        android:layout_marginTop="20dp"/>
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email_utente"
-        android:textSize="14dp"
-        android:textColor="@color/SecondaryWhite"
-        android:layout_marginTop="1dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nome_utente"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/PrimaryWhite"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_utente"
+            android:textSize="14dp"
+            android:textColor="@color/SecondaryWhite"
+            android:layout_marginTop="1dp"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

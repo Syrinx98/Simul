@@ -42,6 +42,15 @@
         android:id="@+id/creazioneLobbyFragment"
         android:name="sanchez.miguel.alfonso.simul.CreazioneLobbyFragment"
         android:label="fragment_creazione_lobby"
-        tools:layout="@layout/fragment_creazione_lobby" />
+        tools:layout="@layout/fragment_creazione_lobby" >
+        <action
+            android:id="@+id/action_creazioneLobbyFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lobbyFragment"
+        android:name="sanchez.miguel.alfonso.simul.LobbyFragment"
+        android:label="fragment_lobby"
+        tools:layout="@layout/fragment_lobby" />
 
 </navigation>

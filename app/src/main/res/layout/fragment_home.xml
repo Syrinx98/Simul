@@ -14,12 +14,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/goto_creazionelobby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            app:cardCornerRadius="8dp">
+            android:layout_marginTop="25dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,14 +47,13 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/goto_partecipalobby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            app:cardCornerRadius="8dp">
+            android:layout_marginTop="25dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,8 +88,7 @@
             android:id="@+id/goto_aggiungiamici"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            app:cardCornerRadius="8dp">
+            android:layout_marginTop="25dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

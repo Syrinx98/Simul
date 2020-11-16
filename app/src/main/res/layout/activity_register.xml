@@ -1,93 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
-    android:background="@color/Grigietto">
+    android:background="@color/BackDark"
+    android:paddingTop="30dp"
+    android:paddingBottom="40dp"
+    android:paddingRight="40dp"
+    android:paddingLeft="40dp">
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="140dp"
-        android:layout_height="86dp"
-        android:background="@drawable/register_backgrounds"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Registrati!"
-        android:textAllCaps="false"
-        android:textColor="@color/Nero"
-        android:textSize="30sp"
-        app:autoSizeMaxTextSize="100sp"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nick" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:theme="@style/MyCheckboxTheme"
-        app:layout_constraintBottom_toBottomOf="@+id/nick"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/nick"
-        app:layout_constraintTop_toTopOf="@+id/nick" />
-
-    <EditText
-        android:id="@+id/nick"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/register_backgrounds"
-        android:cursorVisible="true"
-        android:gravity="start|center_vertical"
-        android:hint="Nickname"
-        android:maxLength="16"
-        android:padding="8dp"
-        android:singleLine="true"
-        android:textColor="@color/Bianco"
-        android:textColorHint="@color/Bianco"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
 
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/register_button"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_image_input" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Creazione account"
+            android:textSize="28dp"
+            android:textColor="@color/SecondaryWhite"
+            android:textStyle="bold"/>
 
+        <ImageView
+            android:id="@+id/user_image_input"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="12dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_photo_icon"
+            android:background="@color/GrigioTextForm"/>
 
-    <ImageView
-        android:id="@+id/user_image_input"
-        android:layout_width="64sp"
-        android:layout_height="64sp"
-        android:background="@drawable/register_backgrounds"
-        android:padding="12sp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/add_photo_icon"
-        app:layout_constraintBottom_toTopOf="@+id/nick"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_chainStyle="spread" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:hint="Nickname"
+            app:boxBackgroundColor="@color/GrigioTextForm"
+            android:singleLine="true"
+            android:maxLength="16"
+            android:textColorHint="@color/SecondaryWhite">
 
-    <TextView
-        android:id="@+id/textView"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Schermata di registrazione"
-        android:textSize="18sp"
-        android:textColor="@color/Nero"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accetto le condizioni di utilizzo"
+                android:textColor="@color/SecondaryWhite"/>
+
+            <CheckBox
+                android:layout_marginLeft="10dp"
+                android:id="@+id/checkBox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:theme="@style/MyCheckboxTheme" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/ViolaChiaro"
+            android:gravity="center"
+            android:text="Registrati"
+            android:textColor="@color/Nero"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

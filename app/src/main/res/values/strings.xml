@@ -6,12 +6,11 @@
     <string name="menu_profilo">Il tuo profilo</string>
     <string name="menu_impostazioni">Impostazioni</string>
     <string name="menu_info">Guida e info</string>
-
     <string name="nome_utente">John Doe</string>
     <string name="email_utente">johndoe@gmail.com</string>
-
     <string name="open">Open</string>
     <string name="close">Close</string>
-
     <string name="text_id_stanza_number">000000</string>
+    <string name="text_destinazione">Destinazione scelta</string>
+    <string name="text_velocita">0km/h</string>
 </resources>
