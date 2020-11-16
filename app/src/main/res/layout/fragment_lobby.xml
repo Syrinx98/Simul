@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LobbyFragment"
+    android:background="@color/BackDark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingRight="40dp"
+        android:paddingLeft="40dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_id_stanza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stiamo andando verso"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/SecondaryWhite"/>
+
+            <TextView
+                android:id="@+id/text_id_stanza_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_destinazione"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/PrimaryWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/AltroDark"
+            android:layout_marginTop="25dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/profilepic"
+                app:civ_border_width="5dp"
+                app:civ_border_color="@color/ColoreAnelloStato" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nome_utente"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/PrimaryWhite"
+                    android:layout_alignParentTop="true"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stai viaggiando a..."
+                        android:textSize="14sp"
+                        android:textColor="@color/SecondaryWhite"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_velocita"
+                        android:layout_marginTop="-5dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/PrimaryWhite"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- fare icona come da prototipo -->
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icona_stato_guida" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
