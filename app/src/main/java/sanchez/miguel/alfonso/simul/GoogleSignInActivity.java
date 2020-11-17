@@ -56,7 +56,6 @@ public class GoogleSignInActivity extends BaseActivity {
 
             setContentView(R.layout.activity_main);
 
-            //Todo Martin : iconcina di google a sinistra all'interno del bottone, c'è un comando apposta in xml, drawableleft e aggiungi drawable fatto apposta, io so già come fare ma non voglio toglierti lavoro in modo che tu possa imparare a fare anche queste cose ;-)
             findViewById(R.id.google_register_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +27,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.text.BreakIterator;
 import java.util.Objects;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import static android.content.Context.MODE_PRIVATE;
 import static sanchez.miguel.alfonso.simul.BaseActivity.CurrentUserRef;
 import static sanchez.miguel.alfonso.simul.BaseActivity.NicknameRef;
 import static sanchez.miguel.alfonso.simul.BaseActivity.UsersRef;
+import static sanchez.miguel.alfonso.simul.BaseActivity.data_creazione_account;
 import static sanchez.miguel.alfonso.simul.BaseActivity.dialog;
 import static sanchez.miguel.alfonso.simul.BaseActivity.editor;
+import static sanchez.miguel.alfonso.simul.BaseActivity.email;
+import static sanchez.miguel.alfonso.simul.BaseActivity.link_immmagine_dentro_db;
 import static sanchez.miguel.alfonso.simul.BaseActivity.mGoogleSignInClient;
 import static sanchez.miguel.alfonso.simul.BaseActivity.nickname;
 import static sanchez.miguel.alfonso.simul.BaseActivity.prefs;
@@ -42,6 +50,11 @@ import static sanchez.miguel.alfonso.simul.BaseActivity.web_client_for_google_si
 
 
 public class ProfiloFragment extends BaseFragment {
+
+    private ImageView user_img;
+    private TextView email_textview;
+    private TextView date_textview;
+    private TextView nickname_textview;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -76,20 +89,28 @@ public class ProfiloFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-            //listeners per i tasti
-            view.findViewById(R.id.tasto_logout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sloggami(getContext());
-                }
-            });
+        user_img = view.findViewById(R.id.user_photo);
+        email_textview = view.findViewById(R.id.email);
+        date_textview = view.findViewById(R.id.creation_date);
+        nickname_textview = view.findViewById(R.id.nickname);
 
-            view.findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    delete_account(getContext());
-                }
-            });
+        //listeners per i tasti
+        view.findViewById(R.id.tasto_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sloggami(getContext());
+            }
+        });
+
+        view.findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete_account(getContext());
+            }
+        });
+
+        //Update delle informazioni, posso chiamarlo perchè per essere arrivato qua i dati devono essere stati scaricati
+        update_ui_user_information();
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -184,6 +205,7 @@ public class ProfiloFragment extends BaseFragment {
     }
 
     private void remove_nickaname_from_database(final Context context){
+        nickname = prefs.getString("nickname","none");
         NicknameRef.child(nickname).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -205,5 +227,23 @@ public class ProfiloFragment extends BaseFragment {
             }
         });
     }
+
+    private void update_ui_user_information(){
+        link_immmagine_dentro_db = prefs.getString("immagine","-");
+        email = prefs.getString("email","sas@ses.com");
+        data_creazione_account = prefs.getString("data_creazione","01/01/1900");
+        Picasso.get()
+                .load(link_immmagine_dentro_db)
+                .transform(new CropCircleTransformation())
+                .placeholder(R.drawable.round_images_placeholder)
+                .error(R.drawable.unknown_user)
+                .into(user_img);
+        user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
+
+        email_textview.setText(email);
+        date_textview.setText("Creato il\n" + data_creazione_account);
+        nickname_textview.setText(nickname);
+    }
+
 
 }

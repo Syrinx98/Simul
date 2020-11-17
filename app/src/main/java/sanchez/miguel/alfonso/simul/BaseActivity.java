@@ -53,7 +53,7 @@ abstract class BaseActivity extends AppCompatActivity {
     public static final String web_client_for_google_sign_in = "436100610708-gfrks3cgfganfa8tgj3ic54us9kempjm.apps.googleusercontent.com";
 
     //Inizializzo questi valori nell'attività di login prima del controllo
-    //Todo verificare la correttezza dell'architettura.
+
     public static SharedPreferences prefs;
     public static SharedPreferences.Editor editor;
     public static FirebaseAuth mAuth;
@@ -169,9 +169,13 @@ abstract class BaseActivity extends AppCompatActivity {
                         if (dataSnapshot.hasChild(nickname)) {
                             if (!TextUtils.isEmpty(nickname)) {
                                 Toast.makeText(context, "Il nickname scelto è già presente", Toast.LENGTH_SHORT).show();
+                                //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
+                                //Basta che modifichi i file drawable
                                 nick_editext.setBackgroundResource(R.drawable.red_stroke);
                             }
                         } else {
+                            //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
+                            //Basta che modifichi i file drawable 
                             nick_editext.setBackgroundResource(R.drawable.green_stroke);
                         }
                     }

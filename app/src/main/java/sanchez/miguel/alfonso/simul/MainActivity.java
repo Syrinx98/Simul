@@ -112,12 +112,12 @@ public class MainActivity extends BaseActivity {
 
 
     //se premo il pulsante per tornare indietro, esce dall'app.
-    /*
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-    */
+
     
     protected void download_information(final Context context){
         prendi_ora_attuale();
@@ -169,9 +169,6 @@ public class MainActivity extends BaseActivity {
                     editor.putString("email",email);
                     editor.apply();
 
-                    //todo attenzione a questo passaggio, una volta che ho scaricato i dati li passo alla funzione per l'update dell'ui, scrivo a schermo quello che ho scaricato
-                    //update_ui_user_information();
-
                     connection_countdowntimer.cancel();
                     ciao.dismiss();
                     if (connessione_scadente_comunicata){
@@ -190,21 +187,8 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    /*
-    private void update_ui_user_information(){
-        Picasso.get()
-                .load(link_immmagine_dentro_db)
-                .transform(new CropCircleTransformation())
-                .placeholder(R.drawable.round_images_placeholder)
-                .error(R.drawable.unknown_user)
-                .into(user_img);
-        user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
 
-        email_textview.setText(email);
-        date_textview.setText("Creato il\n" + data_creazione_account);
-        nickname_textview.setText(nickname);
 
-    }
-    */
+
 
 }
