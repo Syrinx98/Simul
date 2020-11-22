@@ -1,5 +1,6 @@
 package sanchez.miguel.alfonso.simul;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,8 @@ public class HomeFragment extends Fragment {
         v.findViewById(R.id.goto_creazionelobby).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_home2_to_creazioneLobbyFragment);
+                startActivity(new Intent(getContext(), CreazioneLobbyActivity.class));
+
             }
         });
 

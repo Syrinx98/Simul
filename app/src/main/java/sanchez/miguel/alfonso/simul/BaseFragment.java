@@ -4,6 +4,8 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.Objects;
 import static sanchez.miguel.alfonso.simul.BaseActivity.User;
 

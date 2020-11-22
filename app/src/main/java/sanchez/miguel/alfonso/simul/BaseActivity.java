@@ -85,6 +85,7 @@ abstract class BaseActivity extends AppCompatActivity {
     public static DatabaseReference NicknameRef;
     public static DatabaseReference UsersRef;
     public static DatabaseReference CurrentUserRef;
+    public static DatabaseReference RoomsRef;
 
     //Variabili necessarie per i metodi pubblici
     private int registration_three_way_check;

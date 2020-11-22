@@ -38,7 +38,7 @@
                     android:textColor="@color/PrimaryWhite"/>
 
                 <TextView
-                    android:id="@+id/text_id_stanza_number"
+                    android:id="@+id/chosen_destination"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_id_stanza_number"
@@ -57,6 +57,7 @@
                 android:textColorHint="@color/SecondaryWhite">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/destinazione_input_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
