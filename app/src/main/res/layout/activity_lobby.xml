@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LobbyFragment"
+    tools:context=".LobbyCreatoreActivity"
     android:background="@color/BackDark">
 
     <LinearLayout
@@ -109,6 +109,15 @@
                 android:src="@drawable/icona_stato_guida" />
 
         </LinearLayout>
+
+        <!-- Recycler grid view dinamica -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lista_utenti_lobby">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

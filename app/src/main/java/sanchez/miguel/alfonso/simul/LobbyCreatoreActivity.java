@@ -5,7 +5,13 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -13,6 +19,11 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
     TextView creator_nickname,destination_chosen;
     ImageView creator_img;
+
+    RecyclerView persone_lobby;
+    List<String> nomi;
+    List<Integer> immagini;
+    Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +46,23 @@ public class LobbyCreatoreActivity extends BaseActivity {
                 .error(R.drawable.unknown_user)
                 .into(creator_img);
 
+        //Bindings per recycler grid view
+        persone_lobby = findViewById(R.id.lista_utenti_lobby);
+        nomi = new ArrayList<>();
+        immagini = new ArrayList<>();
+
+        adapter = new Adapter(this, nomi, immagini);
+
+        int colonne = 2;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, colonne, GridLayoutManager.VERTICAL, false);
+        persone_lobby.setLayoutManager(gridLayoutManager);
+        persone_lobby.setAdapter(adapter);
+
+        aggiungiPersone();
+
+    }
+
+    public void aggiungiPersone(){
+        //aggiungere dinamicamente le persone nelle Liste
     }
 }
