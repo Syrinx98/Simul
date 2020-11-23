@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval" >
+    <!-- use this for transparent -->
+    <!-- <solid android:color="#00000000" /> -->
+    <!-- use this for a background colour -->
+    <corners android:radius="100sp" />
+    <size android:width="40dp" android:height="40dp"/>
+    <solid android:color="@color/fui_transparent"/>
+    <stroke android:width="4dp"  android:color="@color/Rosso" />
+</shape>

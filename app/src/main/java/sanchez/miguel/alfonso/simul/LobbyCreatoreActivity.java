@@ -80,12 +80,19 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
                 holder.nome.setText(model.getParticipant_name());
 
+                if(model.getParticipant_state().equals("0")){
+                    holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
+                }
+                else{
+                    holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
+                }
+
             }
 
             @NonNull
             @Override
             public LobbyCreatoreActivity.LobbyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lobby_item_grid_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lobby_item_grid, parent, false);
                 return new LobbyHolder(view);
             }
         };

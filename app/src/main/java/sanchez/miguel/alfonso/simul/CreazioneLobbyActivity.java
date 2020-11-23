@@ -79,7 +79,7 @@ public class CreazioneLobbyActivity extends BaseActivity{
         }
         else{
             if (initial_length != 0){
-                Toast.makeText(CreazioneLobbyActivity.this,"Furbetto!\nNon puoi mettere spazi ;)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreazioneLobbyActivity.this,"Furbetto!\nNon puoi mettere spazi \uD83D\uDD95", Toast.LENGTH_SHORT).show();
             }
             else{
                 Toast.makeText(CreazioneLobbyActivity.this,"Inserisci una destinazione", Toast.LENGTH_SHORT).show();

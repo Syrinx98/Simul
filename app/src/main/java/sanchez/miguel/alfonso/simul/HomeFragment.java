@@ -36,6 +36,13 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        v.findViewById(R.id.goto_partecipalobby).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), CercaLobbyActivity.class));
+
+            }
+        });
 
         return v;
     }

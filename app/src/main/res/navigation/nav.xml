@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_home2_to_creazioneLobbyFragment"
             app:destination="@id/creazioneLobbyFragment" />
+        <action
+            android:id="@+id/action_home2_to_cercaLobbyActivity"
+            app:destination="@id/cercaLobbyActivity" />
     </fragment>
 
     <fragment
@@ -40,7 +43,7 @@
         tools:layout="@layout/fragment_info" />
     <fragment
         android:id="@+id/creazioneLobbyFragment"
-        android:name="sanchez.miguel.alfonso.simul.CreazioneLobbyFragment"
+        android:name="sanchez.miguel.alfonso.simul.CreazioneLobbyActivity"
         android:label="fragment_creazione_lobby"
         tools:layout="@layout/activity_creazione_lobby" >
         <action
@@ -49,8 +52,13 @@
     </fragment>
     <fragment
         android:id="@+id/lobbyFragment"
-        android:name="sanchez.miguel.alfonso.simul.LobbyFragment"
+        android:name="sanchez.miguel.alfonso.simul.LobbyCreatoreActivity"
         android:label="fragment_lobby"
         tools:layout="@layout/activity_lobby" />
+    <activity
+        android:id="@+id/cercaLobbyActivity"
+        android:name="sanchez.miguel.alfonso.simul.CercaLobbyActivity"
+        android:label="activity_cerca_lobby"
+        tools:layout="@layout/activity_cerca_lobby" />
 
 </navigation>
