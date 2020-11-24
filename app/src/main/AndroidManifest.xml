@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CercaLobbyActivity"></activity>
+        <activity android:name=".PartecipanteLobbyActivity"></activity>
+        <activity android:name=".CercaLobbyActivity" />
         <activity
             android:name=".LobbyCreatoreActivity"
             android:screenOrientation="portrait" />

@@ -112,12 +112,12 @@ public class MainActivity extends BaseActivity {
 
 
     //se premo il pulsante per tornare indietro, esce dall'app.
-    /*
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-    */
+
     
     protected void download_information(final Context context){
         prendi_ora_attuale();
