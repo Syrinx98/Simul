@@ -1,0 +1,78 @@
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35__Default_Changelist_.xml	(revision c3b74a8ddbcab71c64e5aec0c068a7e5f36d43fa)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35__Default_Changelist_.xml	(revision c3b74a8ddbcab71c64e5aec0c068a7e5f36d43fa)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_17_11_2020_18_35_[Default_Changelist]" date="1605634512589" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 17/11/2020 18:35 [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35_[Default_Changelist]/shelved.patch	(revision c3b74a8ddbcab71c64e5aec0c068a7e5f36d43fa)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_17_11_2020_18_35_[Default_Changelist]/shelved.patch	(revision c3b74a8ddbcab71c64e5aec0c068a7e5f36d43fa)
+@@ -1,63 +0,0 @@
+-Index: app/src/main/java/sanchez/miguel/alfonso/simul/Profilo.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package sanchez.miguel.alfonso.simul;\r\n\r\nimport android.app.Activity;\r\nimport android.app.Dialog;\r\nimport android.content.Context;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.ColorDrawable;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.Window;\r\nimport android.widget.ImageButton;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\n\r\nimport com.google.android.gms.auth.api.signin.GoogleSignIn;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.Objects;\r\n\r\nimport static android.content.Context.MODE_PRIVATE;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.CurrentUserRef;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.NicknameRef;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.UsersRef;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.dialog;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.editor;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.mGoogleSignInClient;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.nickname;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.prefs;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.web_client_for_google_sign_in;\r\n\r\n\r\npublic class Profilo extends BaseFragment {\r\n\r\n    public Profilo() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n\r\n        prefs = requireActivity().getSharedPreferences(\"MY_PREFS_NAME\", MODE_PRIVATE);\r\n        editor = prefs.edit();\r\n        editor.apply();\r\n        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\r\n                .requestIdToken(getString(R.string.default_web_client_id))\r\n                .requestEmail()\r\n                .build();\r\n        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);\r\n        //Prendo auth corrente\r\n        mAuth = FirebaseAuth.getInstance();\r\n\r\n        prendi_user_id_attuale();\r\n\r\n        // Inflate the layout for this fragment\r\n        return inflater.inflate(R.layout.fragment_profilo, container, false);\r\n    }\r\n\r\n    @Override\r\n    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {\r\n\r\n            //listeners per i tasti\r\n            view.findViewById(R.id.tasto_logout).setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View v) {\r\n                    sloggami(getContext());\r\n                }\r\n            });\r\n\r\n            view.findViewById(R.id.tasto_delete_account).setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View v) {\r\n                    delete_account(getContext());\r\n                }\r\n            });\r\n\r\n        super.onViewCreated(view, savedInstanceState);\r\n    }\r\n\r\n\r\n    protected void initilize_google_variables(){\r\n        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\r\n                .requestIdToken(web_client_for_google_sign_in)\r\n                .requestEmail()\r\n                .build();\r\n        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso);\r\n        RC_SIGN_IN = 1;\r\n        signInIntent = mGoogleSignInClient.getSignInIntent();\r\n    }\r\n\r\n\r\n    protected void sloggami(Context context) {\r\n        initilize_google_variables();\r\n        if (mGoogleSignInClient != null){\r\n            mGoogleSignInClient.signOut();\r\n        }\r\n        if (mAuth != null){\r\n            mAuth.signOut();\r\n        }\r\n        FirebaseUser user = Objects.requireNonNull(mAuth).getCurrentUser();\r\n        if (user == null) {\r\n            //Aggiorno SharedPreferences\r\n            editor.putBoolean(\"hasLogin\", false);\r\n            editor.putBoolean(\"CONNECTION\", false);\r\n            editor.putBoolean(\"hasRegistration\", false);\r\n            editor.apply();\r\n\r\n            Toast.makeText(context, \"Sloggato correttamente\", Toast.LENGTH_SHORT).show();\r\n\r\n            requireActivity().finish();\r\n        } else {\r\n            Toast.makeText(context, \"Non sono riuscito a sloggarmi\", Toast.LENGTH_SHORT).show();\r\n        }\r\n    }\r\n\r\n    protected void delete_account(final Context context){\r\n        dialog = new Dialog(context);\r\n        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);\r\n        dialog.setContentView(R.layout.popup_layout);\r\n        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));\r\n        dialog.show();\r\n        // set the custom dialog components - text, image and button\r\n        ImageButton confirm =  dialog.findViewById(R.id.confirm_delete_calibration);\r\n        TextView t = dialog.findViewById(R.id.calibration_name_calibration_lol);\r\n\r\n        t.setText(\"Sicuro di voler eliminare il tuo account?\\ni tuoi dati online andranno persi\");\r\n        confirm.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                delete_account_from_database(context);\r\n            }\r\n        });\r\n\r\n        ImageButton no =  dialog.findViewById(R.id.no_delete_calibration);\r\n        no.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                dialog.dismiss();\r\n            }\r\n        });\r\n    }\r\n\r\n    public void delete_account_from_database(final Context context){\r\n        //riprendo lo user id, in caso di crash le variabili statiche si azzerano\r\n        prendi_user_id_attuale();\r\n        CurrentUserRef = UsersRef.child(current_user_id);\r\n\r\n        CurrentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull final DataSnapshot snapshot) {\r\n                snapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<Void> task) {\r\n                        remove_nickaname_from_database(context);\r\n                    }\r\n                });\r\n\r\n                CurrentUserRef.removeEventListener(this);\r\n            }\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n                CurrentUserRef.removeEventListener(this);\r\n            }\r\n        });\r\n\r\n        dialog.dismiss();\r\n    }\r\n\r\n    private void remove_nickaname_from_database(final Context context){\r\n        NicknameRef.child(nickname).addListenerForSingleValueEvent(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                if (snapshot.exists()){\r\n                    snapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {\r\n                        @Override\r\n                        public void onComplete(@NonNull Task<Void> task) {\r\n                            sloggami(context);\r\n                            dialog.dismiss();\r\n                        }\r\n                    });\r\n                }\r\n                NicknameRef.child(nickname).removeEventListener(this);\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n                NicknameRef.child(nickname).removeEventListener(this);\r\n            }\r\n        });\r\n    }\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- app/src/main/java/sanchez/miguel/alfonso/simul/Profilo.java	(revision 0f21efe87053f88be698d07c2647721bee36e69f)
+-+++ app/src/main/java/sanchez/miguel/alfonso/simul/Profilo.java	(date 1605634341392)
+-@@ -1,6 +1,5 @@
+- package sanchez.miguel.alfonso.simul;
+- 
+--import android.app.Activity;
+- import android.app.Dialog;
+- import android.content.Context;
+- import android.graphics.Color;
+-@@ -13,10 +12,8 @@
+- import android.widget.ImageButton;
+- import android.widget.TextView;
+- import android.widget.Toast;
+--
+- import androidx.annotation.NonNull;
+- import androidx.annotation.Nullable;
+--
+- import com.google.android.gms.auth.api.signin.GoogleSignIn;
+- import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+- import com.google.android.gms.tasks.OnCompleteListener;
+-@@ -26,9 +23,7 @@
+- import com.google.firebase.database.DataSnapshot;
+- import com.google.firebase.database.DatabaseError;
+- import com.google.firebase.database.ValueEventListener;
+--
+- import java.util.Objects;
+--
+- import static android.content.Context.MODE_PRIVATE;
+- import static sanchez.miguel.alfonso.simul.BaseActivity.CurrentUserRef;
+- import static sanchez.miguel.alfonso.simul.BaseActivity.NicknameRef;
+-@@ -184,6 +179,7 @@
+-     }
+- 
+-     private void remove_nickaname_from_database(final Context context){
+-+        nickname = prefs.getString("nickname","none");
+-         NicknameRef.child(nickname).addListenerForSingleValueEvent(new ValueEventListener() {
+-             @Override
+-             public void onDataChange(@NonNull DataSnapshot snapshot) {
+-Index: app/build.gradle
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>apply plugin: 'com.android.application'\r\napply plugin: 'com.google.gms.google-services'\r\n\r\nandroid {\r\n    compileSdkVersion 29\r\n\r\n    defaultConfig {\r\n        applicationId \"sanchez.miguel.alfonso.simul\"\r\n        minSdkVersion 24\r\n        targetSdkVersion 29\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    //signing per release key SHA\r\n\r\n    signingConfigs {\r\n        release {\r\n            storeFile file(\"C:\\\\Users\\\\Martin\\\\Desktop\\\\RobaIngSw\\\\Simul.jks\")\r\n            storePassword \"12345678\"\r\n            keyAlias \"key1\"\r\n            keyPassword \"12345678\"\r\n        }\r\n    }\r\n\r\n    //builtype per la release\r\n    buildTypes {\r\n        release {\r\n            signingConfig signingConfigs.release\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n\r\n        debug {\r\n            applicationIdSuffix \".debug\"\r\n            debuggable true\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'\r\n    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'\r\n    implementation 'com.google.firebase:firebase-auth:19.4.0'\r\n    implementation 'com.google.firebase:firebase-database:19.5.1'\r\n    implementation 'com.google.android.gms:play-services-cast-framework:19.0.0'\r\n    implementation 'com.google.firebase:firebase-storage:19.2.0'\r\n    implementation 'com.google.firebase:firebase-analytics:17.6.0'\r\n\r\n    //immagine presa da storage result\r\n    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'\r\n\r\n    //immagini rotonde, download o load con picasso\r\n    implementation 'com.squareup.picasso:picasso:2.71828'\r\n    implementation 'jp.wasabeef:picasso-transformations:2.2.1'\r\n\r\n    implementation \"com.google.android.material:material:1.2.1\"\r\n\r\n\r\n\r\n\r\n    testImplementation 'junit:junit:4.13'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    //frontend Martin\r\n    def nav_version = \"2.3.1\"\r\n    implementation \"androidx.navigation:navigation-fragment:$nav_version\"\r\n    implementation \"androidx.navigation:navigation-ui:$nav_version\"\r\n    implementation 'com.google.android.material:material:1.3.0-alpha03'\r\n    implementation \"androidx.cardview:cardview:1.0.0\"\r\n\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- app/build.gradle	(revision 0f21efe87053f88be698d07c2647721bee36e69f)
+-+++ app/build.gradle	(date 1605633025165)
+-@@ -17,7 +17,7 @@
+- 
+-     signingConfigs {
+-         release {
+--            storeFile file("C:\\Users\\Martin\\Desktop\\RobaIngSw\\Simul.jks")
+-+            storeFile file("C:\\Users\\alber\\Desktop\\Simul.jks")
+-             storePassword "12345678"
+-             keyAlias "key1"
+-             keyPassword "12345678"

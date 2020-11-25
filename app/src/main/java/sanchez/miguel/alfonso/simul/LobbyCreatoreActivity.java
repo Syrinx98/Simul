@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -58,7 +60,6 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,6 +80,9 @@ public class LobbyCreatoreActivity extends BaseActivity {
                         .into(holder.immagine);
 
                 holder.nome.setText(model.getParticipant_name());
+
+                //robe per spaziare gli elementi (non so come caspita implementare qua con sto adapter)
+                //https://www.youtube.com/watch?v=j6-Huxf1UVA&ab_channel=CodingSararea minuto 10:20 in poi circa
 
                 if(model.getParticipant_state().equals("0")){
                     holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
