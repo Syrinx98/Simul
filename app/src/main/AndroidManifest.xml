@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PartecipanteLobbyActivity"></activity>
+        <activity android:name=".LobbyPartecipanteActivity"></activity>
         <activity android:name=".CercaLobbyActivity" />
         <activity
             android:name=".LobbyCreatoreActivity"

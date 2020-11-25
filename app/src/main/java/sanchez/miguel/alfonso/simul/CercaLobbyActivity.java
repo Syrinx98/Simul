@@ -1,10 +1,8 @@
 package sanchez.miguel.alfonso.simul;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,17 +11,17 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class CercaLobbyActivity extends BaseActivity {
@@ -40,6 +38,10 @@ public class CercaLobbyActivity extends BaseActivity {
 
         cerca_edit_text.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         editext_listener();
+
+        //Resetto il creatore della lobby nella sharedpreferences per evitare bug
+        editor.putString("creatore_lobby","nessuno");
+        editor.apply();
     }
 
 
@@ -88,12 +90,13 @@ public class CercaLobbyActivity extends BaseActivity {
                     trovato = true;
 
                 }
-                public_progressdialog.dismiss();
+
                 if (!trovato){
                     Toast.makeText(CercaLobbyActivity.this,"La room è piena o non esiste", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    startActivity(new Intent(CercaLobbyActivity.this, PartecipanteLobbyActivity.class));
+                    add_participant();
+
                 }
 
             }
@@ -104,6 +107,29 @@ public class CercaLobbyActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void add_participant(){
+
+        //Preparo dati per la query
+        link_immmagine_dentro_db = prefs.getString("immagine","-");
+        nickname = prefs.getString("nickname","none");
+        prendi_user_id_attuale();
+        String creatore_lobby = prefs.getString("creatore_lobby","nessuno");
+
+        //Creo Hashmap informazioni utente
+        HashMap<String, Object> participant_map = new HashMap<>();
+        participant_map.put("participant_name", nickname);
+        participant_map.put("participant_image",link_immmagine_dentro_db);
+        participant_map.put("participant_state","0");
+
+        RoomsRef.child(creatore_lobby).child("partecipanti").child(current_user_id).updateChildren(participant_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                public_progressdialog.dismiss();
+                startActivity(new Intent(CercaLobbyActivity.this, LobbyPartecipanteActivity.class));
+            }
+        });
     }
 
 }
