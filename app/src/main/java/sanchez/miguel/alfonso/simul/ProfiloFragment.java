@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -205,6 +206,7 @@ public class ProfiloFragment extends BaseFragment {
     }
 
     private void remove_nickaname_from_database(final Context context){
+        NicknameRef = FirebaseDatabase.getInstance().getReference().child("Nicknames");
         nickname = prefs.getString("nickname","none");
         NicknameRef.child(nickname).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
