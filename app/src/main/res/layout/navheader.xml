@@ -25,6 +25,7 @@
         android:layout_marginLeft="10dp">
 
         <TextView
+            android:id="@+id/nav_profile_nick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nome_utente"
@@ -33,6 +34,7 @@
             android:textColor="@color/PrimaryWhite"/>
 
         <TextView
+            android:id="@+id/nav_profile_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/email_utente"

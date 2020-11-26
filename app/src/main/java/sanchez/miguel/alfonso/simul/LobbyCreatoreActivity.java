@@ -1,12 +1,16 @@
 package sanchez.miguel.alfonso.simul;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +20,9 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyCreatoreActivity extends BaseActivity {
@@ -25,6 +32,7 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
     RecyclerView persone_lobby;
 
+    static Dialog stato_overlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +60,11 @@ public class LobbyCreatoreActivity extends BaseActivity {
         RoomsRef = FirebaseDatabase.getInstance().getReference().child("Rooms");
         prendi_user_id_attuale();
 
-
-
         int colonne = 2;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, colonne, GridLayoutManager.VERTICAL, false);
         persone_lobby.setLayoutManager(gridLayoutManager);
+
+        stato_overlay = new Dialog(this);
 
     }
 
@@ -81,16 +89,12 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
                 holder.nome.setText(model.getParticipant_name());
 
-                //robe per spaziare gli elementi (non so come caspita implementare qua con sto adapter)
-                //https://www.youtube.com/watch?v=j6-Huxf1UVA&ab_channel=CodingSararea minuto 10:20 in poi circa
-
                 if(model.getParticipant_state().equals("0")){
                     holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
                 }
                 else{
                     holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
                 }
-
             }
 
             @NonNull
@@ -113,7 +117,29 @@ public class LobbyCreatoreActivity extends BaseActivity {
             super(itemView);
             nome = itemView.findViewById(R.id.lobby_grid_item_nick);
             immagine = itemView.findViewById(R.id.lobby_grid_item_img);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopup(nome.getText().toString(),immagine);
+                }
+            });
         }
+    }
+
+    static private void showPopup(String nome, ImageView immagine){
+        stato_overlay.setContentView(R.layout.card_stato_altrui_lobby);
+
+        TextView nome_card = stato_overlay.findViewById(R.id.partecipante_name);
+        nome_card.setText(nome);
+
+        ImageView immagine_card = stato_overlay.findViewById(R.id.partecipante_immagine);
+        immagine_card.setImageDrawable(immagine.getDrawable());
+
+        stato_overlay.show();
+        stato_overlay.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        View v = stato_overlay.getWindow().getDecorView();
+        v.setBackgroundResource(android.R.color.transparent);
     }
 
 

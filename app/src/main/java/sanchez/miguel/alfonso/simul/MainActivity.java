@@ -25,9 +25,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Objects;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class MainActivity extends BaseActivity {
 
@@ -168,6 +171,19 @@ public class MainActivity extends BaseActivity {
                     editor.putString("nickname",nickname);
                     editor.putString("email",email);
                     editor.apply();
+
+                    TextView nickname_menu = findViewById(R.id.nav_profile_nick);
+                    TextView email_menu = findViewById(R.id.nav_profile_email);
+                    ImageView img_menu = findViewById(R.id.nav_profile_image);
+
+                    nickname_menu.setText(nickname);
+                    email_menu.setText(email);
+                    Picasso.get()
+                            .load(link_immmagine_dentro_db)
+                            .transform(new CropCircleTransformation())
+                            .placeholder(R.drawable.round_images_placeholder)
+                            .error(R.drawable.unknown_user)
+                            .into(img_menu);
 
                     connection_countdowntimer.cancel();
                     ciao.dismiss();
