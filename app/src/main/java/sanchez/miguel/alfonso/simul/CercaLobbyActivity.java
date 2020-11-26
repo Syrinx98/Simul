@@ -93,6 +93,7 @@ public class CercaLobbyActivity extends BaseActivity {
 
                 if (!trovato){
                     Toast.makeText(CercaLobbyActivity.this,"La room è piena o non esiste", Toast.LENGTH_SHORT).show();
+                    public_progressdialog.dismiss();
                 }
                 else{
                     add_participant();
