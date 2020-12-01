@@ -89,6 +89,71 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/segnala_stato_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:backgroundTint="@color/ViolaChiaro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_outline_keyboard_arrow_up_24" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/partito_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/in_viaggio_dimensionabile"
+            android:text="Sono partito"
+            app:layout_constraintBottom_toTopOf="@+id/segnala_stato_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Verde" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/arrivato_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/arrivato_dimensionabile"
+            android:text="Sono arrivato"
+            app:layout_constraintBottom_toTopOf="@+id/partito_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Verde" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/pausa_rifornimenti_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/rifornimenti_dimensionabile"
+            android:text="Ho fatto una pausa rifornimenti"
+            app:layout_constraintBottom_toTopOf="@+id/arrivato_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Giallo" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/traffico_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/traffico_dimensionabile"
+            android:text="Ho problemi col traffico"
+            app:layout_constraintBottom_toTopOf="@+id/pausa_rifornimenti_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Giallo" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/problemi_auto_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/problemi_auto_dimensionabile"
+            android:text="Ho un problema all'auto"
+            app:layout_constraintBottom_toTopOf="@+id/traffico_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Giallo" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/emergenza_btn"
+            style="@style/BottoniStati"
+            android:drawableEnd="@drawable/emergenza_dimensionabile"
+            android:text="Ho un emergenza grave"
+            app:layout_constraintBottom_toTopOf="@+id/problemi_auto_btn"
+            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
+            app:strokeColor="@color/Rosso" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

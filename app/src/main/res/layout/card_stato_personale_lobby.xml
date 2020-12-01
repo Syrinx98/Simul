@@ -62,8 +62,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/icona_stato_guida"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -31,6 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.BreakIterator;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -234,6 +239,11 @@ public class ProfiloFragment extends BaseFragment {
         link_immmagine_dentro_db = prefs.getString("immagine","-");
         email = prefs.getString("email","sas@ses.com");
         data_creazione_account = prefs.getString("data_creazione","01/01/1900");
+
+        String resultDate = convertStringDateToAnotherStringDate(data_creazione_account, "dd-MM-yyyy", "dd MMMM yyyy");
+
+
+        //TO-DO: formattare la stringa data secondo il formato giorno(int) mese(string) anno(int)
         Picasso.get()
                 .load(link_immmagine_dentro_db)
                 .transform(new CropCircleTransformation())
@@ -243,9 +253,20 @@ public class ProfiloFragment extends BaseFragment {
         user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
 
         email_textview.setText(email);
-        date_textview.setText("Creato il\n" + data_creazione_account);
+        date_textview.setText("Account creato il\n" + resultDate);
         nickname_textview.setText(nickname);
     }
 
+    public String convertStringDateToAnotherStringDate(String stringdate, String stringdateformat, String returndateformat){
 
+        try {
+            Date date = new SimpleDateFormat(stringdateformat).parse(stringdate);
+            String returndate = new SimpleDateFormat(returndateformat, Locale.ITALIAN).format(date);
+            return returndate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
 }
