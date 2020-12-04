@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sanchez.miguel.alfonso.simul">
 
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
@@ -10,8 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LobbyPartecipanteActivity"></activity>
-        <activity android:name=".CercaLobbyActivity" />
+        <activity android:name=".LobbyPartecipanteActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CercaLobbyActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LobbyCreatoreActivity"
             android:screenOrientation="portrait" />
@@ -38,5 +43,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
+
+
+
+
+    <uses-feature android:name="android.hardware.location.gps"/>
 
 </manifest>
