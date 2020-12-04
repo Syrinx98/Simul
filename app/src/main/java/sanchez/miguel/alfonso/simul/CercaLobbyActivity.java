@@ -47,6 +47,7 @@ public class CercaLobbyActivity extends BaseActivity {
 
     private void editext_listener() {
         cerca_edit_text.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 

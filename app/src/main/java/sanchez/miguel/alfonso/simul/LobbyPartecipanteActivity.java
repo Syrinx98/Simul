@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +26,8 @@ public class LobbyPartecipanteActivity extends BaseActivity {
 
     String creatore_lobby;
     RecyclerView persone_lobby;
+
+    Dialog stato_overlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,11 @@ public class LobbyPartecipanteActivity extends BaseActivity {
                 .setQuery(query, LobbyQuery.class)
                 .build();
 
-        final FirebaseRecyclerAdapter<LobbyQuery, LobbyCreatoreActivity.LobbyHolder> adapter = new FirebaseRecyclerAdapter<LobbyQuery, LobbyCreatoreActivity.LobbyHolder>(options) {
+        final FirebaseRecyclerAdapter<LobbyQuery, LobbyPartecipanteActivity.LobbyHolderPartecipante> adapter = new FirebaseRecyclerAdapter<LobbyQuery, LobbyPartecipanteActivity.LobbyHolderPartecipante>(options) {
+
             @Override
-            protected void onBindViewHolder(@NonNull LobbyCreatoreActivity.LobbyHolder holder, int position, @NonNull LobbyQuery model) {
+            protected void onBindViewHolder(@NonNull LobbyPartecipanteActivity.LobbyHolderPartecipante holder, int position, @NonNull LobbyQuery model) {
+
                 Picasso.get()
                         .load(model.getParticipant_image())
                         .transform(new CropCircleTransformation())
@@ -73,13 +80,51 @@ public class LobbyPartecipanteActivity extends BaseActivity {
 
             @NonNull
             @Override
-            public LobbyCreatoreActivity.LobbyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public LobbyPartecipanteActivity.LobbyHolderPartecipante onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lobby_item_grid, parent, false);
-                return new LobbyCreatoreActivity.LobbyHolder(view);
+                return new LobbyPartecipanteActivity.LobbyHolderPartecipante(view);
             }
         };
 
         persone_lobby.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    public class LobbyHolderPartecipante extends RecyclerView.ViewHolder {
+
+        final TextView nome;
+        final ImageView immagine;
+
+        public LobbyHolderPartecipante(@NonNull View itemView) {
+
+            super(itemView);
+            nome = itemView.findViewById(R.id.lobby_grid_item_nick);
+            immagine = itemView.findViewById(R.id.lobby_grid_item_img);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopup(nome.getText().toString(),immagine);
+                }
+            });
+        }
+    }
+
+    private void showPopup(String nome, ImageView immagine){
+
+        stato_overlay = new Dialog(this);
+
+        stato_overlay.setContentView(R.layout.card_stato_altrui_lobby);
+
+        TextView nome_card = stato_overlay.findViewById(R.id.partecipante_name);
+        nome_card.setText(nome);
+
+        ImageView immagine_card = stato_overlay.findViewById(R.id.partecipante_immagine);
+        immagine_card.setImageDrawable(immagine.getDrawable());
+
+        stato_overlay.show();
+        stato_overlay.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        View v = stato_overlay.getWindow().getDecorView();
+        v.setBackgroundResource(android.R.color.transparent);
     }
 }

@@ -38,7 +38,7 @@ public class LobbyCreatoreActivity extends BaseActivity {
 
     RecyclerView persone_lobby;
 
-    static Dialog stato_overlay;
+    Dialog stato_overlay;
 
     //variabili FAB
     FloatingActionButton segnala_stato_btn;
@@ -183,7 +183,7 @@ public class LobbyCreatoreActivity extends BaseActivity {
     }
 
 
-    public static class LobbyHolder extends RecyclerView.ViewHolder {
+    public class LobbyHolder extends RecyclerView.ViewHolder {
 
         final TextView nome;
         final ImageView immagine;
@@ -203,7 +203,7 @@ public class LobbyCreatoreActivity extends BaseActivity {
         }
     }
 
-    static private void showPopup(String nome, ImageView immagine){
+    private void showPopup(String nome, ImageView immagine){
 
         stato_overlay.setContentView(R.layout.card_stato_altrui_lobby);
 
