@@ -99,9 +99,10 @@ public class CreazioneLobbyActivity extends BaseActivity{
         nickname = prefs.getString("nickname","none");
         String destinazione = Objects.requireNonNull(destinazione_input_text.getText()).toString().trim();
         editor.putString("destinazione_room",destinazione);
+        editor.putString("room_id",id);
         editor.apply();
 
-        HashMap<String, Object> roomMap = new HashMap<>();
+        final HashMap<String, Object> roomMap = new HashMap<>();
         roomMap.put("room_id",id);
         roomMap.put("creatore", nickname);
         roomMap.put("immagine_creatore",link_immmagine_dentro_db);
@@ -109,21 +110,31 @@ public class CreazioneLobbyActivity extends BaseActivity{
 
         prendi_user_id_attuale();
 
-        //IMPORTANTE La creo con l'user id attuale perchè l'utente deve poter creare solo una stanza alla volta.
-        RoomsRef.child(current_user_id).updateChildren(roomMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        RoomsRef.child(current_user_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                aggiungi_creatore_ai_partecipanti();
+                //IMPORTANTE La creo con l'user id attuale perchè l'utente deve poter creare solo una stanza alla volta.
+                RoomsRef.child(current_user_id).updateChildren(roomMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        aggiungi_creatore_ai_partecipanti();
+                    }
+                });
+
             }
         });
+
+
     }
+
 
     private void aggiungi_creatore_ai_partecipanti(){
         HashMap<String, Object> creator_as_participant_map = new HashMap<>();
         creator_as_participant_map.put("participant_name", nickname);
         creator_as_participant_map.put("participant_image",link_immmagine_dentro_db);
-        //TODO DA DECIDERE COSA METTERE NELLO STATO
+        creator_as_participant_map.put("participant_speed","00.00");
         creator_as_participant_map.put("participant_state","0");
+
         RoomsRef.child(current_user_id).child("partecipanti").child(current_user_id).updateChildren(creator_as_participant_map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

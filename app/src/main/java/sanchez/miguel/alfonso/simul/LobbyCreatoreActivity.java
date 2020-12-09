@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,9 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyCreatoreActivity extends BaseActivity implements LocationListener, SensorEventListener {
 
-    TextView creator_nickname,destination_chosen;
+    String room_id;
+
+    TextView creator_nickname,destination_chosen,room_id_textview,velocita_utente_textview;
     ImageView creator_img;
 
     RecyclerView persone_lobby;
@@ -69,15 +72,24 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
     SensorManager sensorManager;
     Sensor sensor;
 
+    private double nCurrentSpeed = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        room_id = prefs.getString("room_id","00000000");
+
         //Bindings
-        creator_nickname = findViewById(R.id.creator_name);
-        destination_chosen = findViewById(R.id.chosen_destination);
+        //(cardview)
         creator_img = findViewById(R.id.creatore_immagine);
+        velocita_utente_textview = findViewById(R.id.velocita_utente_textview);
+        creator_nickname = findViewById(R.id.creator_name);
+
+        //Resto bindings
+        room_id_textview = findViewById(R.id.chosen_id);
+        destination_chosen = findViewById(R.id.chosen_destination);
         persone_lobby = findViewById(R.id.lista_utenti_lobby);
 
         segnala_stato_btn = findViewById(R.id.segnala_stato_btn);
@@ -94,6 +106,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         to_bottom = AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim);
 
         //Settaggio textview
+        room_id_textview.setText(room_id);
         creator_nickname.setText(prefs.getString("nickname","Unknown"));
         destination_chosen.setText(prefs.getString("destinazione_room","Nessuna"));
 
@@ -199,21 +212,42 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
             @Override
             protected void onBindViewHolder(@NonNull LobbyCreatoreActivity.LobbyHolder holder, int position, @NonNull LobbyQuery model) {
-                Picasso.get()
-                        .load(model.getParticipant_image())
-                        .transform(new CropCircleTransformation())
-                        .error(R.drawable.unknown_user)
-                        .into(holder.immagine);
 
-                holder.nome.setText(model.getParticipant_name());
 
-                if(model.getParticipant_state().equals("0")){
-                    holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
+                if (!model.getParticipant_name().equals(nickname)){
+                    Picasso.get()
+                            .load(model.getParticipant_image())
+                            .transform(new CropCircleTransformation())
+                            .error(R.drawable.unknown_user)
+                            .into(holder.immagine);
+
+                    holder.nome.setText(model.getParticipant_name());
+
+                    if(model.getParticipant_state().equals("0") ){
+                        holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
+                    }
+                    else {
+                        holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
+                        Toast.makeText(LobbyCreatoreActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
                 else{
-                    holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
+
+                    RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+                    param.height = 0;
+                    param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    holder.itemView.setVisibility(View.VISIBLE);
+
+                    if(model.getParticipant_state().equals("0") ){
+                        creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
+                    }
+                    else {
+                        creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
+                        Toast.makeText(LobbyCreatoreActivity.this,"Intervengo subito!",Toast.LENGTH_LONG).show();
+                    }
                 }
-                //TO-DO: aggiungere ramo per cerchio giallo (presente e pronto all'uso), verificare che il database lo permetta prima
 
             }
 
@@ -235,12 +269,12 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         final TextView nome;
         final ImageView immagine;
 
+
         public LobbyHolder(@NonNull View itemView) {
 
             super(itemView);
             nome = itemView.findViewById(R.id.lobby_grid_item_nick);
             immagine = itemView.findViewById(R.id.lobby_grid_item_img);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -344,11 +378,16 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         if(locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
-        Toast.makeText(this, "Waiting for GPS connection...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Accedo al GPS...", Toast.LENGTH_SHORT).show();
     }
 
+
+
+
+
+
     private void updateSpeed(CLocation location){
-        float nCurrentSpeed = 0;
+
         if(location != null){
             location.setbUseMetricUnits(this.useMetricUnits());
             nCurrentSpeed = location.getSpeed();
@@ -359,9 +398,9 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         strCurrentSpeed = strCurrentSpeed.replace(" ", "0");
         if(this.useMetricUnits()){
 
-            //todo aggiornare dati nel database
-            String current_speed = strCurrentSpeed;
-
+            prendi_user_id_attuale();
+            update_current_speed_in_database(current_user_id,current_user_id,strCurrentSpeed);
+            velocita_utente_textview.setText(strCurrentSpeed + "km/h");
         }
         else{
 
@@ -393,6 +432,14 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         double normalizzato = Math.sqrt(Math.pow(event.values[0],2)+Math.pow(event.values[1],2)+Math.pow(event.values[2],2));
         //todo check su normalizzato, teoricamente a valori normali è 9.81, valutare quante accelerazioni di gravità di servono
         //todo per il trigger
+
+        if(check_accelerometer_anomalies(normalizzato)){
+
+            if (check_velocity_anomalies(nCurrentSpeed)){
+                prendi_user_id_attuale();
+                pop_alarm_possible_sinister(LobbyCreatoreActivity.this,current_user_id,current_user_id);
+            }
+        }
 
     }
 

@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -35,10 +36,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -89,6 +93,25 @@ abstract class BaseActivity extends AppCompatActivity {
 
     //Variabili necessarie per i metodi pubblici
     private int registration_three_way_check;
+
+
+    //valori soglia accelerometro e velocità
+    public static final double SOGLIA_ACCELEROMETRO = 50.0;
+    public static final double SOGLIA_VELOCITA_KM_H = 35.0;
+    public static final int ALARM_COUNTDOWN_MAX_TIME = 10000;
+
+    private boolean dialog_is_already_opened = false;
+
+    CountDownTimer alarm_countdown;
+
+
+    boolean check_accelerometer_anomalies(double val){
+        return val >= SOGLIA_ACCELEROMETRO;
+    }
+
+    boolean check_velocity_anomalies(double val){
+        return val >= SOGLIA_VELOCITA_KM_H;
+    }
 
 
     protected void prendi_user_id_attuale() {
@@ -302,6 +325,85 @@ abstract class BaseActivity extends AppCompatActivity {
                         Toast.makeText(context, "Errore: " + message, Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+    }
+
+    protected void update_current_speed_in_database(String uid_creatore,String uid_utente,String speed){
+
+        RoomsRef = FirebaseDatabase.getInstance().getReference().child("Rooms");
+
+        RoomsRef.child(uid_creatore).child("partecipanti").child(uid_utente).child("participant_speed").setValue(speed).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+    }
+
+    protected void pop_alarm_possible_sinister(Context context, final String uid_creatore, final String uid_utente){
+
+        //controllo se il dialog non sia già aperto
+        if (!dialog_is_already_opened){
+
+            dialog_is_already_opened = true;
+            dialog = new Dialog(context);
+            dialog.setCancelable(false);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.sinister_alarm_popup_layout);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+            if (!(context instanceof Activity && ((Activity) context).isFinishing())) {
+                dialog.show();
+            }
+
+            // set the custom dialog components - text, image and button
+            ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);
+            TextView t = dialog.findViewById(R.id.alarm_popup_message);
+            final TextView time = dialog.findViewById(R.id.countdown_time);
+
+            t.setText("Hey!\nTutto ok?");
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    close_dialog();
+                }
+            });
+
+            //Inizio il countdown
+            alarm_countdown = new CountDownTimer(ALARM_COUNTDOWN_MAX_TIME,500) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    String local_time = (millisUntilFinished / 1000) + "";
+                    time.setText(local_time);
+                }
+
+                @Override
+                public void onFinish() {
+                    close_dialog();
+                    send_alarm_to_room(uid_creatore,uid_utente);
+                }
+            };
+
+
+            alarm_countdown.start();
+        }
+    }
+
+    private void close_dialog(){
+        dialog_is_already_opened = false;
+        dialog.dismiss();
+        alarm_countdown.cancel();
+    }
+
+    private void send_alarm_to_room(String uid_creatore,String uid_utente){
+        RoomsRef = FirebaseDatabase.getInstance().getReference().child("Rooms");
+
+        RoomsRef.child(uid_creatore).child("partecipanti").child(uid_utente).child("participant_state").setValue("1").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
             }
         });
     }

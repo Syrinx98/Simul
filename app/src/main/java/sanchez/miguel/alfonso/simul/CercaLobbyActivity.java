@@ -124,6 +124,7 @@ public class CercaLobbyActivity extends BaseActivity {
         participant_map.put("participant_name", nickname);
         participant_map.put("participant_image",link_immmagine_dentro_db);
         participant_map.put("participant_state","0");
+        participant_map.put("participant_speed","00.00");
 
         RoomsRef.child(creatore_lobby).child("partecipanti").child(current_user_id).updateChildren(participant_map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -1,6 +1,5 @@
 package sanchez.miguel.alfonso.simul;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -30,7 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.BreakIterator;
 import java.util.Objects;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -159,8 +157,8 @@ public class ProfiloFragment extends BaseFragment {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         // set the custom dialog components - text, image and button
-        ImageButton confirm =  dialog.findViewById(R.id.confirm_delete_calibration);
-        TextView t = dialog.findViewById(R.id.calibration_name_calibration_lol);
+        ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);
+        TextView t = dialog.findViewById(R.id.alarm_popup_message);
 
         t.setText("Sicuro di voler eliminare il tuo account?\ni tuoi dati online andranno persi");
         confirm.setOnClickListener(new View.OnClickListener() {
