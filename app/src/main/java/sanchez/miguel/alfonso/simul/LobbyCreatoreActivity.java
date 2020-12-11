@@ -123,6 +123,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
         int colonne = 2;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, colonne, GridLayoutManager.VERTICAL, false);
+
         persone_lobby.setLayoutManager(gridLayoutManager);
 
         stato_overlay = new Dialog(this);
@@ -237,8 +238,8 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
                     RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
                     param.height = 0;
-                    param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                    holder.itemView.setVisibility(View.VISIBLE);
+                    param.width = 0;
+                    holder.itemView.setVisibility(View.GONE);
 
                     if(model.getParticipant_state().equals("0") ){
                         creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));

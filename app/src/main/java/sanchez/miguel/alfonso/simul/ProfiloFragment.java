@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.BreakIterator;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -54,6 +62,8 @@ public class ProfiloFragment extends BaseFragment {
     private TextView email_textview;
     private TextView date_textview;
     private TextView nickname_textview;
+    private Button profilo_btn_crea_angelo;
+    private Dialog crea_angelo_dialog;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -92,6 +102,8 @@ public class ProfiloFragment extends BaseFragment {
         email_textview = view.findViewById(R.id.email);
         date_textview = view.findViewById(R.id.creation_date);
         nickname_textview = view.findViewById(R.id.nickname);
+        profilo_btn_crea_angelo = view.findViewById(R.id.profilo_btn_crea_angelo);
+        crea_angelo_dialog = new Dialog(view.getContext());
 
         //listeners per i tasti
         view.findViewById(R.id.tasto_logout).setOnClickListener(new View.OnClickListener() {
@@ -105,6 +117,13 @@ public class ProfiloFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 delete_account(getContext());
+            }
+        });
+
+        profilo_btn_crea_angelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupAngelo();
             }
         });
 
@@ -232,6 +251,9 @@ public class ProfiloFragment extends BaseFragment {
         link_immmagine_dentro_db = prefs.getString("immagine","-");
         email = prefs.getString("email","sas@ses.com");
         data_creazione_account = prefs.getString("data_creazione","01/01/1900");
+
+        String resultDate = convertStringDateToAnotherStringDate(data_creazione_account, "dd-MM-yyyy", "dd MMMM yyyy");
+
         Picasso.get()
                 .load(link_immmagine_dentro_db)
                 .transform(new CropCircleTransformation())
@@ -241,8 +263,29 @@ public class ProfiloFragment extends BaseFragment {
         user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
 
         email_textview.setText(email);
-        date_textview.setText("Creato il\n" + data_creazione_account);
+        date_textview.setText("Account creato il\n" + resultDate);
         nickname_textview.setText(nickname);
+    }
+
+    public String convertStringDateToAnotherStringDate(String stringdate, String stringdateformat, String returndateformat){
+
+        try {
+            Date date = new SimpleDateFormat(stringdateformat).parse(stringdate);
+            String returndate = new SimpleDateFormat(returndateformat, Locale.ITALIAN).format(date);
+            return returndate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
+    private void showPopupAngelo(){
+        crea_angelo_dialog.setContentView(R.layout.dialog_modifica_dati_angelo);
+        crea_angelo_dialog.show();
+        crea_angelo_dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        View view = crea_angelo_dialog.getWindow().getDecorView();
+        view.setBackgroundResource(android.R.color.transparent);
     }
 
 
