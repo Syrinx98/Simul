@@ -1,6 +1,7 @@
 package sanchez.miguel.alfonso.simul;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,11 +34,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.BreakIterator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -53,6 +59,7 @@ import static sanchez.miguel.alfonso.simul.BaseActivity.link_immmagine_dentro_db
 import static sanchez.miguel.alfonso.simul.BaseActivity.mGoogleSignInClient;
 import static sanchez.miguel.alfonso.simul.BaseActivity.nickname;
 import static sanchez.miguel.alfonso.simul.BaseActivity.prefs;
+import static sanchez.miguel.alfonso.simul.BaseActivity.public_progressdialog;
 import static sanchez.miguel.alfonso.simul.BaseActivity.web_client_for_google_sign_in;
 
 
@@ -64,6 +71,8 @@ public class ProfiloFragment extends BaseFragment {
     private TextView nickname_textview;
     private Button profilo_btn_crea_angelo;
     private Dialog crea_angelo_dialog;
+    private TextInputEditText angelo_reference;
+    private TextInputEditText angelo_nome;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -97,6 +106,7 @@ public class ProfiloFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
 
         user_img = view.findViewById(R.id.user_photo);
         email_textview = view.findViewById(R.id.email);
@@ -281,12 +291,90 @@ public class ProfiloFragment extends BaseFragment {
     }
 
     private void showPopupAngelo(){
+
         crea_angelo_dialog.setContentView(R.layout.dialog_modifica_dati_angelo);
         crea_angelo_dialog.show();
         crea_angelo_dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        View view = crea_angelo_dialog.getWindow().getDecorView();
+        final View view = crea_angelo_dialog.getWindow().getDecorView();
         view.setBackgroundResource(android.R.color.transparent);
+
+        //Bindings
+        angelo_nome = view.findViewById(R.id.angelo_nome);
+        angelo_reference = view.findViewById(R.id.angelo_numero);
+
+        //setto il name e la reference già esistenti
+        angelo_nome.setText(prefs.getString("angel_name","Non ancora impostato"));
+        angelo_reference.setText(prefs.getString("angel_reference","Non ancora impostato"));
+
+        view.findViewById(R.id.btn_conferma_dati_angelo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Getto
+                String angel_name = angelo_nome.getText().toString();
+                String angel_reference = angelo_reference.getText().toString();
+                //Trimmo
+                angel_name = Objects.requireNonNull(angel_name.trim());
+                angel_reference = Objects.requireNonNull(angel_reference.trim());
+                //Provo
+                if (check_angel_name_and_reference(angel_name,angel_reference)){
+                    set_angel_in_database(angel_name,angel_reference);
+                }
+            }
+        });
     }
 
+    private boolean check_angel_name_and_reference(String angel_name,String angel_reference){
+        if (check_angel_name(angel_name)){
+            Toast.makeText(getContext(),"Il nome è troppo corto",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (check_angel_reference(angel_reference)){
+            Toast.makeText(getContext(),"Il numero di telefono è troppo corto",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    private boolean check_angel_name(String angel_name){
+        return angel_name.length() < 3;
+    }
+
+
+    private boolean check_angel_reference(String angel_reference){
+        return angel_reference.length() < 8 ;
+    }
+
+
+    private void set_angel_in_database(final String angel_name,final String angel_reference){
+        //Spawn progressdialog
+        public_progressdialog = ProgressDialog.show(getActivity(), null,null, false, false );
+        Objects.requireNonNull(public_progressdialog.getWindow()).setBackgroundDrawable( new ColorDrawable( Color.TRANSPARENT ));
+        public_progressdialog.setContentView(R.layout.dialog_bar);
+
+
+        prendi_user_id_attuale();
+        CurrentUserRef = UsersRef.child(current_user_id);
+        HashMap<String, Object> angelMap = new HashMap<>();
+        angelMap.put("guardian_angel_name",angel_name);
+        angelMap.put("guardian_angel_reference",angel_reference);
+
+        CurrentUserRef.updateChildren(angelMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                //Aggiorno in sharedpreferences
+                editor.putString("angel_name",angel_name);
+                editor.putString("angel_reference",angel_reference);
+                editor.apply();
+
+                Toast.makeText(getContext(),"Il tuo angelo custode ora ti protegge in caso di incidente!",Toast.LENGTH_SHORT).show();
+                public_progressdialog.dismiss();
+                crea_angelo_dialog.dismiss();
+            }
+        });
+
+    }
 
 }

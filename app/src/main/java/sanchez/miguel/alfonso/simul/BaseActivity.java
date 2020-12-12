@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -45,6 +48,7 @@ import com.google.firebase.storage.UploadTask;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -70,6 +74,8 @@ abstract class BaseActivity extends AppCompatActivity {
     public static String link_immmagine_dentro_db;
     public static String nickname;
     public static String email;
+    public static String angel_name;
+    public static String angel_reference;
 
     //Variabili per il client in locale di google sing in
     public GoogleSignInOptions gso;
@@ -97,13 +103,12 @@ abstract class BaseActivity extends AppCompatActivity {
 
     //valori soglia accelerometro e velocità
     public static final double SOGLIA_ACCELEROMETRO = 50.0;
-    public static final double SOGLIA_VELOCITA_KM_H = 35.0;
+    public static final double SOGLIA_VELOCITA_KM_H = 0;
     public static final int ALARM_COUNTDOWN_MAX_TIME = 10000;
 
     private boolean dialog_is_already_opened = false;
 
     CountDownTimer alarm_countdown;
-
 
     boolean check_accelerometer_anomalies(double val){
         return val >= SOGLIA_ACCELEROMETRO;
@@ -293,6 +298,9 @@ abstract class BaseActivity extends AppCompatActivity {
         userMap.put("nickname", nickname);
         userMap.put("email",prefs.getString("email","Mail non trovata"));
         userMap.put("user_image",link_immmagine_dentro_db);
+        //L'utente lo imposterà dopo, questo ci da la possibilità di vedere quanti effettivamente usano la funzione
+        userMap.put("guardian_angel_name","Non ancora impostato");
+        userMap.put("guardian_angel_reference","Non ancora impostato");
 
 
         //Ora creo un figlio di Users, il figlio sarà l'id univoco
@@ -341,7 +349,7 @@ abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    protected void pop_alarm_possible_sinister(Context context, final String uid_creatore, final String uid_utente){
+    protected void pop_alarm_possible_sinister(Context context, final String uid_creatore, final String uid_utente, final Location current_location){
 
         //controllo se il dialog non sia già aperto
         if (!dialog_is_already_opened){
@@ -382,6 +390,16 @@ abstract class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     close_dialog();
+                    String location_format = "http://maps.google.com/?q=" + current_location.getLatitude() + "," + current_location.getLongitude();
+                    String longitude = current_location.getLongitude() + "";
+                    String latitude = current_location.getLatitude() + "";
+                    String altitude = current_location.getAltitude() + "";
+                    String speed = current_location.getSpeed() + "";
+                    String time = current_location.getTime() + "";
+                    Log.v("CIAO","longitude "+ longitude + "\nlatitude " + latitude + "\naltitude " + altitude + "\nspeed " + speed + "\nora " + time);
+
+                    String message = "Simul Guardian Angel System\nIncidente rilevato a questa posizione\n" + "Longitudine "+ longitude + "\nLatitudine " + latitude + "\nAltitudine " + altitude + "\nVelocità " + speed + "\nLINK\n" + location_format;
+                    send_sms(prefs.getString("angel_reference","Non ancora impostato"),message);
                     send_alarm_to_room(uid_creatore,uid_utente);
                 }
             };
@@ -409,16 +427,29 @@ abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    public void send_sms(String number,String message){
 
+        SmsManager mySmsManager = SmsManager.getDefault();
 
-
-
-
-
-
-
-
+        ArrayList<String> parts = mySmsManager.divideMessage(message);
+        mySmsManager.sendMultipartTextMessage(number,null, parts, null, null);
+    }
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

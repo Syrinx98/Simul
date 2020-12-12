@@ -3,6 +3,7 @@ package sanchez.miguel.alfonso.simul;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyPartecipanteActivity extends BaseActivity implements LocationListener, SensorEventListener {
 
-    TextView creator_nickname,destination_chosen,velocita_utente_textview;
+    TextView creator_nickname, destination_chosen, velocita_utente_textview;
     ImageView creator_img;
 
 
@@ -70,13 +71,18 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
     private double nCurrentSpeed = 0;
 
+    LocationManager locationManager;
+    Location locationGPS;
+    Location locationNet;
+    Location currentBestLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
 
-        creatore_lobby = prefs.getString("creatore_lobby","nessuno");
+        creatore_lobby = prefs.getString("creatore_lobby", "nessuno");
 
         //Bindings
         //(cardview)
@@ -93,20 +99,20 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         arrivato_btn = findViewById(R.id.arrivato_btn);
         pausa_rifornimenti_btn = findViewById(R.id.pausa_rifornimenti_btn);
         traffico_btn = findViewById(R.id.traffico_btn);
-        problemi_auto_bnt  = findViewById(R.id.problemi_auto_btn);
+        problemi_auto_bnt = findViewById(R.id.problemi_auto_btn);
         emergenza_btn = findViewById(R.id.emergenza_btn);
 
-        rotate_open = AnimationUtils.loadAnimation(this,R.anim.rotate_open_anim);
-        rotate_close = AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim);
-        from_bottom = AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim);
-        to_bottom = AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim);
+        rotate_open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
+        rotate_close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
+        from_bottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
+        to_bottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
 
         //Settaggio textview
-        creator_nickname.setText(prefs.getString("nickname","Unknown"));
-        destination_chosen.setText(prefs.getString("destinazione_room","Nessuna"));
+        creator_nickname.setText(prefs.getString("nickname", "Unknown"));
+        destination_chosen.setText(prefs.getString("destinazione_room", "Nessuna"));
 
         Picasso.get()
-                .load(prefs.getString("immagine","-"))
+                .load(prefs.getString("immagine", "-"))
                 .transform(new CropCircleTransformation())
                 .placeholder(R.drawable.round_images_placeholder)
                 .error(R.drawable.unknown_user)
@@ -127,57 +133,64 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         partito_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Partito",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Partito", Toast.LENGTH_SHORT).show();
             }
         });
         arrivato_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Arrivato",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Arrivato", Toast.LENGTH_SHORT).show();
             }
         });
         pausa_rifornimenti_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Pausa rifornimenti",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Pausa rifornimenti", Toast.LENGTH_SHORT).show();
             }
         });
         traffico_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Problemi traffico",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Problemi traffico", Toast.LENGTH_SHORT).show();
             }
         });
         problemi_auto_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Problemi auto",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Problemi auto", Toast.LENGTH_SHORT).show();
             }
         });
         emergenza_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Emergenza !!!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Emergenza !!!", Toast.LENGTH_SHORT).show();
             }
         });
 
 
         initialize_accelerometer_and_gps();
 
+        //Richiedo permessi per i messaggi
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            currentBestLocation = getLastBestLocation();
+        }
+
     }
 
 
-    private void initialize_accelerometer_and_gps(){
+    private void initialize_accelerometer_and_gps() {
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(LobbyPartecipanteActivity.this,sensor,sensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(LobbyPartecipanteActivity.this, sensor, sensorManager.SENSOR_DELAY_NORMAL);
 
         // check for gps permission
-        if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
-        }
-        else{
+        } else {
             // start the program if the permission is granted
             doStuff();
         }
@@ -187,23 +200,22 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
     }
 
-    private void onSegnalaStatoClicked(){
+    private void onSegnalaStatoClicked() {
         setVisibilityStati(cliccato);
         setAnimationStati(cliccato);
         cliccato = !cliccato;
     }
 
 
-    private void setVisibilityStati(Boolean cliccato){
-        if(!cliccato){
+    private void setVisibilityStati(Boolean cliccato) {
+        if (!cliccato) {
             partito_btn.setVisibility(View.VISIBLE);
             arrivato_btn.setVisibility(View.VISIBLE);
             pausa_rifornimenti_btn.setVisibility(View.VISIBLE);
             traffico_btn.setVisibility(View.VISIBLE);
             problemi_auto_bnt.setVisibility(View.VISIBLE);
             emergenza_btn.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             partito_btn.setVisibility(View.INVISIBLE);
             arrivato_btn.setVisibility(View.INVISIBLE);
             pausa_rifornimenti_btn.setVisibility(View.INVISIBLE);
@@ -213,8 +225,8 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         }
     }
 
-    private void setAnimationStati(Boolean cliccato){
-        if(!cliccato){
+    private void setAnimationStati(Boolean cliccato) {
+        if (!cliccato) {
             segnala_stato_btn.startAnimation(rotate_open);
             partito_btn.startAnimation(from_bottom);
             arrivato_btn.startAnimation(from_bottom);
@@ -222,8 +234,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             traffico_btn.startAnimation(from_bottom);
             problemi_auto_bnt.startAnimation(from_bottom);
             emergenza_btn.startAnimation(from_bottom);
-        }
-        else{
+        } else {
             segnala_stato_btn.startAnimation(rotate_close);
             partito_btn.startAnimation(to_bottom);
             arrivato_btn.startAnimation(to_bottom);
@@ -250,7 +261,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             @Override
             protected void onBindViewHolder(@NonNull LobbyPartecipanteActivity.LobbyHolderPartecipante holder, int position, @NonNull LobbyQuery model) {
 
-                if (!model.getParticipant_name().equals(nickname)){
+                if (!model.getParticipant_name().equals(nickname)) {
                     Picasso.get()
                             .load(model.getParticipant_image())
                             .transform(new CropCircleTransformation())
@@ -259,28 +270,25 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
                     holder.nome.setText(model.getParticipant_name());
 
-                    if(model.getParticipant_state().equals("0") ){
+                    if (model.getParticipant_state().equals("0")) {
                         holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                    }
-                    else {
+                    } else {
                         holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                        Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LobbyPartecipanteActivity.this, "Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!", Toast.LENGTH_LONG).show();
                     }
 
-                }
-                else{
+                } else {
                     //Caso in cui scarico le informazioni di me stesso, in questo caso l'update verrà fatto in me stesso
-                    RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+                    RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
                     param.height = 0;
                     param.width = LinearLayout.LayoutParams.MATCH_PARENT;
                     holder.itemView.setVisibility(View.VISIBLE);
 
-                    if(model.getParticipant_state().equals("0") ){
+                    if (model.getParticipant_state().equals("0")) {
                         creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                    }
-                    else {
+                    } else {
                         creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                        Toast.makeText(LobbyPartecipanteActivity.this,"Intervengo subito!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LobbyPartecipanteActivity.this, "Intervengo subito!", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -312,13 +320,13 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPopup(nome.getText().toString(),immagine);
+                    showPopup(nome.getText().toString(), immagine);
                 }
             });
         }
     }
 
-    private void showPopup(String nome, ImageView immagine){
+    private void showPopup(String nome, ImageView immagine) {
 
         stato_overlay = new Dialog(this);
 
@@ -337,13 +345,15 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     }
 
 
-
     //overrides delle interfacce implementate
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if(location != null){
+        if (location != null) {
             CLocation myLocation = new CLocation(location, this.useMetricUnits());
             this.updateSpeed(myLocation);
+
+            currentBestLocation = location;
+
         }
     }
 
@@ -363,17 +373,17 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     }
 
     @SuppressLint("MissingPermission")
-    private void doStuff(){
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager != null){
+    private void doStuff() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         Toast.makeText(this, "Accedo al GPS...", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateSpeed(CLocation location){
+    private void updateSpeed(CLocation location) {
 
-        if(location != null){
+        if (location != null) {
             location.setbUseMetricUnits(this.useMetricUnits());
             nCurrentSpeed = location.getSpeed();
         }
@@ -381,29 +391,27 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         fmt.format(Locale.ITALIAN, "%5.1f", nCurrentSpeed);
         String strCurrentSpeed = fmt.toString();
         strCurrentSpeed = strCurrentSpeed.replace(" ", "0");
-        if(this.useMetricUnits()){
+        if (this.useMetricUnits()) {
 
             prendi_user_id_attuale();
-            update_current_speed_in_database(creatore_lobby,current_user_id,strCurrentSpeed);
+            update_current_speed_in_database(creatore_lobby, current_user_id, strCurrentSpeed);
             velocita_utente_textview.setText(strCurrentSpeed);
-        }
-        else{
+        } else {
 
-            Log.v("LobbyPartecipanteActivity","velocità corrente " + strCurrentSpeed);
+            Log.v("LobbyPartecipanteActivity", "velocità corrente " + strCurrentSpeed);
         }
     }
 
-    private boolean useMetricUnits(){
+    private boolean useMetricUnits() {
         return /*sw_metric.isChecked();*/ true;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 1000){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 doStuff();
-            }
-            else{
+            } else {
                 finish();
             }
         }
@@ -413,16 +421,18 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     @Override
     public void onSensorChanged(SensorEvent event) {
         DecimalFormat df2 = new DecimalFormat("#.##");
-        double normalizzato = Math.sqrt(Math.pow(event.values[0],2)+Math.pow(event.values[1],2)+Math.pow(event.values[2],2));
+        double normalizzato = Math.sqrt(Math.pow(event.values[0], 2) + Math.pow(event.values[1], 2) + Math.pow(event.values[2], 2));
         //todo normalizzato attualmente a 50
 
-        Log.v("LobbyPartecipanteActivity","valori accelerometro " + normalizzato);
+        Log.v("LobbyPartecipanteActivity", "valori accelerometro " + normalizzato);
 
-        if(check_accelerometer_anomalies(normalizzato)){
+        if (check_accelerometer_anomalies(normalizzato)) {
 
-            if (check_velocity_anomalies(nCurrentSpeed)){
+            if (check_velocity_anomalies(nCurrentSpeed)) {
                 prendi_user_id_attuale();
-                pop_alarm_possible_sinister(LobbyPartecipanteActivity.this,creatore_lobby,current_user_id);
+
+
+                pop_alarm_possible_sinister(LobbyPartecipanteActivity.this, creatore_lobby, current_user_id,currentBestLocation);
             }
         }
 
@@ -431,6 +441,25 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+
+    private Location getLastBestLocation() {
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
     }
 
 

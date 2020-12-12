@@ -32,6 +32,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -73,6 +74,11 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
     Sensor sensor;
 
     private double nCurrentSpeed = 0;
+
+    LocationManager locationManager;
+    Location locationGPS;
+    Location locationNet;
+    Location currentBestLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +180,14 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
 
         initialize_accelerometer_and_gps();
+
+        //Richiedo permessi per i messaggi
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            currentBestLocation = getLastBestLocation();
+        }
 
     }
 
@@ -355,6 +369,8 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         if(location != null){
             CLocation myLocation = new CLocation(location, this.useMetricUnits());
             this.updateSpeed(myLocation);
+
+            currentBestLocation = location;
         }
     }
 
@@ -375,7 +391,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     @SuppressLint("MissingPermission")
     private void doStuff(){
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if(locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
@@ -438,7 +454,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
             if (check_velocity_anomalies(nCurrentSpeed)){
                 prendi_user_id_attuale();
-                pop_alarm_possible_sinister(LobbyCreatoreActivity.this,current_user_id,current_user_id);
+                pop_alarm_possible_sinister(LobbyCreatoreActivity.this,current_user_id,current_user_id,currentBestLocation);
             }
         }
 
@@ -448,5 +464,26 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
+    private Location getLastBestLocation() {
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
+    }
+
+
 
 }

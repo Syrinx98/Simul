@@ -63,32 +63,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:icon="@drawable/ic_outline_person_add"
-                android:text="Invita un amico"
-                android:textSize="12dp"
-                android:textColor="@color/ViolaChiaro"
-                app:iconSize="12dp"
-                app:iconTint="@color/ViolaChiaro"
-                app:strokeColor="@color/GrigioTextForm"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:icon="@drawable/ic_outline_share"
-                android:text="Copia il link condivisione"
-                android:textSize="12dp"
-                android:textColor="@color/ViolaChiaro"
-                app:iconSize="12dp"
-                app:iconTint="@color/ViolaChiaro"
-                app:strokeColor="@color/GrigioTextForm"/>
-
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

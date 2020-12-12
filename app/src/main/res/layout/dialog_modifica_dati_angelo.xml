@@ -36,6 +36,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/angelo_nome"
                 android:layout_width="match_parent"
+                android:maxLines="20"
                 android:layout_height="wrap_content"
                 android:textColor="@color/PrimaryWhite" />
 
@@ -55,6 +56,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:inputType="phone"
                 android:id="@+id/angelo_numero"
+                android:maxLines="10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/PrimaryWhite" />

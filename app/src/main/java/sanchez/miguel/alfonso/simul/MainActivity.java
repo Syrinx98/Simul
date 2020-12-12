@@ -74,6 +74,9 @@ public class MainActivity extends BaseActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
+
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -85,10 +88,6 @@ public class MainActivity extends BaseActivity {
                 switch (item.getItemId()){
                     case R.id.menu_home: {
                         temp = new HomeFragment();
-                        break;
-                    }
-                    case R.id.menu_amici: {
-                        temp = new AmiciFragment();
                         break;
                     }
                     case R.id.menu_profilo: {
@@ -164,12 +163,17 @@ public class MainActivity extends BaseActivity {
                     data_creazione_account = Objects.requireNonNull(dataSnapshot.child("data").getValue()).toString();
                     nickname = Objects.requireNonNull(dataSnapshot.child("nickname").getValue()).toString();
                     email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
+                    //todo
+                    angel_name = Objects.requireNonNull(dataSnapshot.child("guardian_angel_name").getValue()).toString();
+                    angel_reference = Objects.requireNonNull(dataSnapshot.child("guardian_angel_reference").getValue()).toString();
 
                     editor.putString("uid",current_user_id);
                     editor.putString("immagine",link_immmagine_dentro_db);
                     editor.putString("data_creazione",data_creazione_account);
                     editor.putString("nickname",nickname);
                     editor.putString("email",email);
+                    editor.putString("angel_name",angel_name);
+                    editor.putString("angel_reference",angel_reference);
                     editor.apply();
 
                     TextView nickname_menu = findViewById(R.id.nav_profile_nick);
