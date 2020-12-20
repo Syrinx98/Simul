@@ -88,7 +88,6 @@ public class RegisterActivity extends BaseActivity {
                         .transform(new CropCircleTransformation())
                         .error(R.drawable.unknown_user)
                         .into(user_img);
-                user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
                 immagine_messa = true;
             }
         }

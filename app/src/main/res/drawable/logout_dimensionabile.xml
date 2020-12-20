@@ -1,9 +1,0 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:drawable="@drawable/logout_color"
-        android:width="14dp"
-        android:height="14dp"
-        />
-
-</layer-list >

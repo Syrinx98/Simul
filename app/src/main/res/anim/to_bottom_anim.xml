@@ -7,15 +7,6 @@
         android:duration="300"
         />
 
-    <scale
-        android:pivotY="50%"
-        android:pivotX="50%"
-        android:fromXScale="0.8"
-        android:fromYScale="0.8"
-        android:toXScale="0.8"
-        android:toYScale="0.8"
-        />
-
     <alpha
         android:duration="150"
         android:fromAlpha="1"

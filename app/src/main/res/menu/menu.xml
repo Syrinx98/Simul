@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/menu_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/ic_home"
         android:title="@string/menu_home"/>
 
     <item
         android:id="@+id/menu_profilo"
-        android:icon="@drawable/user"
+        android:icon="@drawable/ic_account"
         android:title="@string/menu_profilo"/>
 
     <item
         android:id="@+id/menu_impostazioni"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/ic_settings"
         android:title="@string/menu_impostazioni"/>
 
     <item
         android:id="@+id/menu_info"
-        android:icon="@drawable/help"
+        android:icon="@drawable/ic_help"
         android:title="@string/menu_info"/>
 
 </menu>

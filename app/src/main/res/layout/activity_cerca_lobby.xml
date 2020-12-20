@@ -1,41 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CercaLobbyActivity"
-    android:background="@color/BackDark"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:background="@drawable/main_sfondo"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutCerca"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cerca stanza tramite ID"
-        android:textColorHint="@color/SecondaryWhite"
-        app:boxBackgroundColor="@color/GrigioTextForm"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cerca_lobby_input_text"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:paddingTop="30dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="30dp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerca gruppo di viaggio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="annulla"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="50dp"
+                app:startIconDrawable="@drawable/ic_search"
+                android:id="@+id/textInputLayoutCerca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cerca stanza tramite ID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cerca_lobby_input_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ANNULLA"
+                android:layout_marginTop="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCerca"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

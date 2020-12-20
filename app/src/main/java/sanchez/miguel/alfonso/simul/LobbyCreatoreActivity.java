@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.AnimationDrawable;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,7 +15,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,29 +22,26 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.Formatter;
@@ -62,11 +60,12 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     Dialog stato_overlay;
 
-    //variabili FAB
+    //variabili Stati
     FloatingActionButton segnala_stato_btn;
-    ExtendedFloatingActionButton partito_btn, arrivato_btn, pausa_rifornimenti_btn, traffico_btn, problemi_auto_bnt, emergenza_btn;
+    MaterialButton partito_btn, arrivato_btn, pausa_rifornimenti_btn, traffico_btn, problemi_auto_bnt, emergenza_btn;
     Boolean cliccato = false;
     Animation rotate_open, rotate_close, from_bottom, to_bottom;
+    MaterialCardView cardview_bottoni_stati;
 
     //Variabili per accelerometro e GPS
 
@@ -98,6 +97,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         destination_chosen = findViewById(R.id.chosen_destination);
         persone_lobby = findViewById(R.id.lista_utenti_lobby);
 
+        cardview_bottoni_stati = findViewById(R.id.cardview_bottoni_stati);
         segnala_stato_btn = findViewById(R.id.segnala_stato_btn);
         partito_btn = findViewById(R.id.partito_btn);
         arrivato_btn = findViewById(R.id.arrivato_btn);
@@ -119,7 +119,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         Picasso.get()
                 .load(prefs.getString("immagine","-"))
                 .transform(new CropCircleTransformation())
-                .placeholder(R.drawable.round_images_placeholder)
+                .placeholder(R.drawable.unknown_user)
                 .error(R.drawable.unknown_user)
                 .into(creator_img);
 
@@ -178,6 +178,13 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
             }
         });
 
+
+        ImageView icona_stato;
+        icona_stato = findViewById(R.id.icona_stato_lobby_creatore);
+        DrawableCompat.setTint(
+                DrawableCompat.wrap(icona_stato.getDrawable()),
+                ContextCompat.getColor(getApplicationContext(), R.color.secondaryWhite)
+        );
 
         initialize_accelerometer_and_gps();
 
@@ -324,6 +331,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     private void setVisibilityStati(Boolean cliccato){
         if(!cliccato){
+            cardview_bottoni_stati.setVisibility(View.VISIBLE);
             partito_btn.setVisibility(View.VISIBLE);
             arrivato_btn.setVisibility(View.VISIBLE);
             pausa_rifornimenti_btn.setVisibility(View.VISIBLE);
@@ -332,18 +340,20 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
             emergenza_btn.setVisibility(View.VISIBLE);
         }
         else{
-            partito_btn.setVisibility(View.INVISIBLE);
-            arrivato_btn.setVisibility(View.INVISIBLE);
-            pausa_rifornimenti_btn.setVisibility(View.INVISIBLE);
-            traffico_btn.setVisibility(View.INVISIBLE);
-            problemi_auto_bnt.setVisibility(View.INVISIBLE);
-            emergenza_btn.setVisibility(View.INVISIBLE);
+            cardview_bottoni_stati.setVisibility(View.GONE);
+            partito_btn.setVisibility(View.GONE);
+            arrivato_btn.setVisibility(View.GONE);
+            pausa_rifornimenti_btn.setVisibility(View.GONE);
+            traffico_btn.setVisibility(View.GONE);
+            problemi_auto_bnt.setVisibility(View.GONE);
+            emergenza_btn.setVisibility(View.GONE);
         }
     }
 
     private void setAnimationStati(Boolean cliccato){
         if(!cliccato){
             segnala_stato_btn.startAnimation(rotate_open);
+            cardview_bottoni_stati.startAnimation(from_bottom);
             partito_btn.startAnimation(from_bottom);
             arrivato_btn.startAnimation(from_bottom);
             pausa_rifornimenti_btn.startAnimation(from_bottom);
@@ -353,6 +363,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         }
         else{
             segnala_stato_btn.startAnimation(rotate_close);
+            cardview_bottoni_stati.startAnimation(to_bottom);
             partito_btn.startAnimation(to_bottom);
             arrivato_btn.startAnimation(to_bottom);
             pausa_rifornimenti_btn.startAnimation(to_bottom);

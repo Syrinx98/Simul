@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/BackDark"
+    android:background="@drawable/main_sfondo"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,17 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/BackDark"
             app:navigationIcon="@drawable/ic_menu" />
-
-        <!--
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/BackDark"
-            app:navigationIcon="@drawable/ic_menu"/>
-         -->
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
@@ -44,10 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        style="@style/my_navigationview"
         app:headerLayout="@layout/navheader"
-        app:menu="@menu/menu"
-        android:background="@color/AltroDark"
-        app:itemTextColor="@color/PrimaryWhite"
-        app:itemIconSize="20dp"/>
+        app:menu="@menu/menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

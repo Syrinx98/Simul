@@ -1,15 +1,14 @@
 package sanchez.miguel.alfonso.simul;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +27,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +34,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.Query;
@@ -53,16 +52,15 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     TextView creator_nickname, destination_chosen, velocita_utente_textview;
     ImageView creator_img;
 
-
     String creatore_lobby;
     RecyclerView persone_lobby;
 
-    //variabili FAB
+    //variabili Stati
     FloatingActionButton segnala_stato_btn;
-    ExtendedFloatingActionButton partito_btn, arrivato_btn, pausa_rifornimenti_btn, traffico_btn, problemi_auto_bnt, emergenza_btn;
+    MaterialButton partito_btn, arrivato_btn, pausa_rifornimenti_btn, traffico_btn, problemi_auto_bnt, emergenza_btn;
     Boolean cliccato = false;
     Animation rotate_open, rotate_close, from_bottom, to_bottom;
-
+    MaterialCardView cardview_bottoni_stati;
 
     Dialog stato_overlay;
     //Variabili per accelerometro e GPS
@@ -94,6 +92,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         destination_chosen = findViewById(R.id.chosen_destination);
         persone_lobby = findViewById(R.id.lista_utenti_lobby);
 
+        cardview_bottoni_stati = findViewById(R.id.cardview_bottoni_stati);
         segnala_stato_btn = findViewById(R.id.segnala_stato_btn);
         partito_btn = findViewById(R.id.partito_btn);
         arrivato_btn = findViewById(R.id.arrivato_btn);
@@ -114,7 +113,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         Picasso.get()
                 .load(prefs.getString("immagine", "-"))
                 .transform(new CropCircleTransformation())
-                .placeholder(R.drawable.round_images_placeholder)
+                .placeholder(R.drawable.unknown_user)
                 .error(R.drawable.unknown_user)
                 .into(creator_img);
 
@@ -168,6 +167,13 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         });
 
 
+        ImageView icona_stato;
+        icona_stato = findViewById(R.id.icona_stato_lobby_creatore);
+        DrawableCompat.setTint(
+                DrawableCompat.wrap(icona_stato.getDrawable()),
+                ContextCompat.getColor(getApplicationContext(), R.color.secondaryWhite)
+        );
+
         initialize_accelerometer_and_gps();
 
         //Richiedo permessi per i messaggi
@@ -209,6 +215,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
     private void setVisibilityStati(Boolean cliccato) {
         if (!cliccato) {
+            cardview_bottoni_stati.setVisibility(View.VISIBLE);
             partito_btn.setVisibility(View.VISIBLE);
             arrivato_btn.setVisibility(View.VISIBLE);
             pausa_rifornimenti_btn.setVisibility(View.VISIBLE);
@@ -216,6 +223,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             problemi_auto_bnt.setVisibility(View.VISIBLE);
             emergenza_btn.setVisibility(View.VISIBLE);
         } else {
+            cardview_bottoni_stati.setVisibility(View.GONE);
             partito_btn.setVisibility(View.INVISIBLE);
             arrivato_btn.setVisibility(View.INVISIBLE);
             pausa_rifornimenti_btn.setVisibility(View.INVISIBLE);

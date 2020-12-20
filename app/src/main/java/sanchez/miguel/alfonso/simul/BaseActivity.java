@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.telephony.SmsManager;
@@ -44,8 +43,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -169,20 +166,20 @@ abstract class BaseActivity extends AppCompatActivity {
     protected boolean nick_check(Context context, EditText NickText){
         final String nickname = NickText.getText().toString();
         if (TextUtils.isEmpty(nickname)){
-            NickText.setBackgroundResource(R.drawable.red_stroke);
+            NickText.setBackgroundResource(R.drawable.fish_red_stroke);
             return false;
         }
         else if (nickname.length() < 3){
-            NickText.setBackgroundResource(R.drawable.red_stroke);
+            NickText.setBackgroundResource(R.drawable.fish_red_stroke);
             return false;
         }
         else if (nickname.contains(" ")){
             Toast.makeText(context, "Il nickname non può contenere spazi", Toast.LENGTH_SHORT).show();
-            NickText.setBackgroundResource(R.drawable.red_stroke);
+            NickText.setBackgroundResource(R.drawable.fish_red_stroke);
             return false;
         }
         else {
-            NickText.setBackgroundResource(R.drawable.green_stroke);
+            NickText.setBackgroundResource(R.drawable.fish_green_stroke);
             return true;
         }
     }
@@ -200,12 +197,12 @@ abstract class BaseActivity extends AppCompatActivity {
                                 Toast.makeText(context, "Il nickname scelto è già presente", Toast.LENGTH_SHORT).show();
                                 //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
                                 //Basta che modifichi i file drawable
-                                nick_editext.setBackgroundResource(R.drawable.red_stroke);
+                                nick_editext.setBackgroundResource(R.drawable.fish_red_stroke);
                             }
                         } else {
                             //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
                             //Basta che modifichi i file drawable 
-                            nick_editext.setBackgroundResource(R.drawable.green_stroke);
+                            nick_editext.setBackgroundResource(R.drawable.fish_green_stroke);
                         }
                     }
                     NicknameRef.removeEventListener(this);

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LobbyCreatoreActivity"
-    android:background="@color/BackDark">
+    tools:context=".LobbyCreatoreActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,51 +30,43 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="?attr/textAppearanceBody2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stiamo andando verso"
-                    android:textColor="@color/SecondaryWhite"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:text="Stiamo andando verso" />
 
                 <TextView
+                    style="?attr/textAppearanceSubtitle1"
                     android:id="@+id/chosen_destination"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-4dp"
-                    android:text="@string/text_destinazione"
-                    android:textColor="@color/PrimaryWhite"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:text="@string/text_destinazione"/>
 
             </LinearLayout>
 
             <TextView
+                style="?attr/textAppearanceBody1"
                 android:id="@+id/chosen_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/text_id_stanza_number"
-                android:textColor="@color/PrimaryWhite"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="@string/text_id_stanza_number" />
 
         </RelativeLayout>
 
-        <!-- Recycler grid view dinamica -->
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:id="@+id/cardview_stato_lobby"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            app:cardCornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testo_info_lobby">
+            app:layout_constraintTop_toBottomOf="@+id/testo_info_lobby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <include layout="@layout/card_stato_personale_lobby" />
 
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_utenti_lobby"
@@ -89,70 +80,76 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/partito_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/in_viaggio_dimensionabile"
-            android:text="Sono partito"
-            app:layout_constraintBottom_toTopOf="@+id/segnala_stato_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Verde" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/arrivato_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/arrivato_dimensionabile"
-            android:text="Sono arrivato"
-            app:layout_constraintBottom_toTopOf="@+id/partito_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Verde" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/pausa_rifornimenti_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/rifornimenti_dimensionabile"
-            android:text="Ho fatto una pausa rifornimenti"
-            app:layout_constraintBottom_toTopOf="@+id/arrivato_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Giallo" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/traffico_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/traffico_dimensionabile"
-            android:text="Ho problemi col traffico"
-            app:layout_constraintBottom_toTopOf="@+id/pausa_rifornimenti_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Giallo" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/problemi_auto_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/problemi_auto_dimensionabile"
-            android:text="Ho un problema all'auto"
-            app:layout_constraintBottom_toTopOf="@+id/traffico_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Giallo" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/emergenza_btn"
-            style="@style/BottoniStati"
-            android:drawableEnd="@drawable/emergenza_dimensionabile"
-            android:text="Ho un emergenza grave"
-            app:layout_constraintBottom_toTopOf="@+id/problemi_auto_btn"
-            app:layout_constraintEnd_toEndOf="@+id/segnala_stato_btn"
-            app:strokeColor="@color/Rosso" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/segnala_stato_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/ViolaChiaro"
+            android:backgroundTint="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_outline_keyboard_arrow_up_24" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_arrow_up" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:translationZ="5dp"
+            android:id="@+id/cardview_bottoni_stati"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/segnala_stato_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:padding="15dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/emergenza_btn"
+                    style="@style/BottoniStatiRossi"
+                    app:icon="@drawable/stati_ic_emergenza_dimensionabile"
+                    android:text="Ho un emergenza grave" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/problemi_auto_btn"
+                    style="@style/BottoniStatiGialli"
+                    app:icon="@drawable/stati_ic_problemi_auto_dimensionabile"
+                    android:text="Ho un problema all'auto" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/traffico_btn"
+                    style="@style/BottoniStatiGialli"
+                    app:icon="@drawable/stati_ic_traffico_dimensionabile"
+                    android:text="Ho problemi col traffico" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pausa_rifornimenti_btn"
+                    style="@style/BottoniStatiGialli"
+                    app:icon="@drawable/stati_ic_rifornimenti_dimensionabile"
+                    android:text="Ho fatto una pausa rifornimenti" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/arrivato_btn"
+                    style="@style/BottoniStatiVerdi"
+                    app:icon="@drawable/stati_ic_arrivato_dimensionabile"
+                    android:text="Sono arrivato" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/partito_btn"
+                    style="@style/BottoniStatiVerdi"
+                    app:icon="@drawable/stati_ic_in_viaggio_dimensionabile"
+                    android:text="Sono partito" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

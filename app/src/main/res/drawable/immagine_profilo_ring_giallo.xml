@@ -6,5 +6,5 @@
     <corners android:radius="100sp" />
     <size android:width="40dp" android:height="40dp"/>
     <solid android:color="@color/fui_transparent"/>
-    <stroke android:width="4dp"  android:color="@color/Giallo" />
+    <stroke android:width="6dp"  android:color="@color/Giallo" />
 </shape>

@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoFragment"
-    android:background="@color/BackDark">
+    tools:context=".InfoFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/menu_info"
-        android:textColor="@color/PrimaryWhite"
         android:gravity="center"/>
 
 </FrameLayout>

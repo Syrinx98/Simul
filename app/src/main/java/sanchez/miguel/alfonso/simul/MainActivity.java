@@ -164,9 +164,10 @@ public class MainActivity extends BaseActivity {
                     nickname = Objects.requireNonNull(dataSnapshot.child("nickname").getValue()).toString();
                     email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
                     //todo
+                    /*
                     angel_name = Objects.requireNonNull(dataSnapshot.child("guardian_angel_name").getValue()).toString();
                     angel_reference = Objects.requireNonNull(dataSnapshot.child("guardian_angel_reference").getValue()).toString();
-
+                    */
                     editor.putString("uid",current_user_id);
                     editor.putString("immagine",link_immmagine_dentro_db);
                     editor.putString("data_creazione",data_creazione_account);
@@ -182,10 +183,11 @@ public class MainActivity extends BaseActivity {
 
                     nickname_menu.setText(nickname);
                     email_menu.setText(email);
+
                     Picasso.get()
                             .load(link_immmagine_dentro_db)
                             .transform(new CropCircleTransformation())
-                            .placeholder(R.drawable.round_images_placeholder)
+                            .placeholder(R.drawable.unknown_user)
                             .error(R.drawable.unknown_user)
                             .into(img_menu);
 

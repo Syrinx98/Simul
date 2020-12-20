@@ -1,0 +1,3 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/stati_ic_emergenza"
+    android:tint="@color/Nero"/>

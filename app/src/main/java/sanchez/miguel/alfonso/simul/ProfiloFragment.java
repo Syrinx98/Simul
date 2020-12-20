@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,10 +34,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.text.BreakIterator;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,7 +65,7 @@ public class ProfiloFragment extends BaseFragment {
     private TextView email_textview;
     private TextView date_textview;
     private TextView nickname_textview;
-    private Button profilo_btn_crea_angelo;
+    private MaterialCardView profilo_crea_angelo;
     private Dialog crea_angelo_dialog;
     private TextInputEditText angelo_reference;
     private TextInputEditText angelo_nome;
@@ -112,7 +108,7 @@ public class ProfiloFragment extends BaseFragment {
         email_textview = view.findViewById(R.id.email);
         date_textview = view.findViewById(R.id.creation_date);
         nickname_textview = view.findViewById(R.id.nickname);
-        profilo_btn_crea_angelo = view.findViewById(R.id.profilo_btn_crea_angelo);
+        profilo_crea_angelo = view.findViewById(R.id.profilo_crea_angelo);
         crea_angelo_dialog = new Dialog(view.getContext());
 
         //listeners per i tasti
@@ -130,7 +126,7 @@ public class ProfiloFragment extends BaseFragment {
             }
         });
 
-        profilo_btn_crea_angelo.setOnClickListener(new View.OnClickListener() {
+        profilo_crea_angelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopupAngelo();
@@ -186,7 +182,7 @@ public class ProfiloFragment extends BaseFragment {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         // set the custom dialog components - text, image and button
-        ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);
+        MaterialCardView confirm =  dialog.findViewById(R.id.imfinethanks);
         TextView t = dialog.findViewById(R.id.alarm_popup_message);
 
         t.setText("Sicuro di voler eliminare il tuo account?\ni tuoi dati online andranno persi");
@@ -197,7 +193,7 @@ public class ProfiloFragment extends BaseFragment {
             }
         });
 
-        ImageButton no =  dialog.findViewById(R.id.no_delete_calibration);
+        MaterialCardView no =  dialog.findViewById(R.id.no_delete_calibration);
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,13 +263,12 @@ public class ProfiloFragment extends BaseFragment {
         Picasso.get()
                 .load(link_immmagine_dentro_db)
                 .transform(new CropCircleTransformation())
-                .placeholder(R.drawable.round_images_placeholder)
+                .placeholder(R.drawable.unknown_user)
                 .error(R.drawable.unknown_user)
                 .into(user_img);
-        user_img.setBackground(getResources().getDrawable(R.drawable.round_images_background));
 
         email_textview.setText(email);
-        date_textview.setText("Account creato il\n" + resultDate);
+        date_textview.setText("Account creato il " + resultDate);
         nickname_textview.setText(nickname);
     }
 

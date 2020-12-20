@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ public class CreazioneLobbyActivity extends BaseActivity{
     private final int LUNGHEZZA_ID = 8;
 
     TextView lobby_id_textview;
-    TextInputEditText destinazione_input_text;
+    EditText destinazione_input_text;
 
 
 

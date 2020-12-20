@@ -1,99 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackDark"
+    android:orientation="vertical"
+    android:background="@drawable/main_sfondo"
     tools:context=".RegisterActivity">
 
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:theme="@style/MyCheckboxTheme"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
-
     <ImageView
-        android:id="@+id/user_image_input"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@color/GrigioTextForm"
-        android:padding="12dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/add_photo_icon"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+        android:id="@+id/register_go_back"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        android:src="@drawable/ic_arrow_forward" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal"
+        style="?attr/textAppearanceSubtitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accetto le condizioni di utilizzo"
-        android:textColor="@color/SecondaryWhite"
-        app:layout_constraintBottom_toTopOf="@+id/register_button"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        android:text="sei nuovo!"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        style="?attr/textAppearanceHeadline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:text="Creazione account"
-        android:textColor="@color/SecondaryWhite"
-        android:textSize="28dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/user_image_input"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Crea il tuo account" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:background="@color/ViolaChiaro"
-        android:gravity="center"
-        android:text="Registrati"
-        android:textColor="@color/Nero"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView2" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="@drawable/bg_sezione"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.8"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/darkGrey">
+
+                <ImageView
+                    android:id="@+id/user_image_input"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/darkGrey"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_add_photo" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="Inserisci il tuo Nickname"
+                android:maxLength="16"
+                android:singleLine="true" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrati ora"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/register_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.8">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="?attr/textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accetto le condizioni di utilizzo" />
+
+        </LinearLayout>
+
+        <!--
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Nickname"
-        android:maxLength="16"
-        android:singleLine="true"
-        android:textColorHint="@color/SecondaryWhite"
-        app:boxBackgroundColor="@color/GrigioTextForm"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/user_image_input"
-        app:layout_constraintTop_toBottomOf="@+id/user_image_input">
+        -->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nick"
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            android:textColor="@color/Bianco"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

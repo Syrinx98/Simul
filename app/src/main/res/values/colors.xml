@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#81d4fa</color>
+    <color name="colorPrimaryDark">#4ba3c7</color>
+    <color name="primaryWhite">#DEFFFFFF</color>
+    <color name="secondaryWhite">#99FFFFFF</color>
+    <color name="tertiaryWhite">#40FFFFFF</color>
+    <color name="colorBackground">#171F25</color>
+    <color name="colorSurface">#1A2A34</color>
+    <color name="darkGrey">#1D3240</color>
+
     <color name="Bianco">#FFFFFF</color>
     <color name="Nero">#000000</color>
-    <color name="Rosso">#CB3234</color>
-    <color name="Verde">#66FF00</color>
-    <color name="Giallo">#FCBA03</color>
-    <color name="Grigietto">#CCCCCC</color>
-    <color name="ViolaChiaro">#BB86FC</color>
-    <color name="BackDark">#121212</color>
-    <color name="AltroDark">#1A1A1A</color>
-    <color name="PrimaryWhite">#E1E1E1</color>
-    <color name="SecondaryWhite">#A3A3A3</color>
-    <color name="GrigioTextForm">#2F2F2F</color>
-    <color name="ColoreAnelloStato">#66FF00</color>
-    <color name="MyBlue">#0053E4</color>
+
+    <color name="Verde">#81F279</color>
+    <color name="Giallo">#FFDB67</color>
+    <color name="Rosso">#FF6565</color>
+
 </resources>

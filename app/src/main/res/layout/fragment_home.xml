@@ -4,86 +4,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFragment"
-    android:background="@color/BackDark"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    tools:context=".HomeFragment" >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/testo1home"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="?attr/textAppearanceBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buongiorno " />
+
+            <TextView
+                style="?attr/textAppearanceBody1"
+                android:id="@+id/home_text_name"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nome_utente"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/testo2home"
+            app:layout_constraintTop_toBottomOf="@+id/testo1home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cosa devi fare oggi?"/>
+
 
         <com.google.android.material.card.MaterialCardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/goto_creazionelobby"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/testo2home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.8"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/AltroDark"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:padding="20dp"
+                android:orientation="vertical"
+                android:gravity="center" >
 
                 <ImageView
-                    android:src="@drawable/create_room"
+                    android:src="@drawable/home_start_ride"
                     android:layout_width="150dp"
                     android:layout_height="150dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_textaction_home"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Crea una nuova stanza virtuale"
-                    android:textColor="@color/PrimaryWhite"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    android:drawableEnd="@drawable/arrow_forward"/>
+                    android:drawableRight="@drawable/ic_arrow_forward"
+                    android:drawablePadding="10dp"
+                    android:text="Crea un nuovo gruppo di viaggio"
+                    android:textColor="@color/Nero"
+                    style="?attr/textAppearanceSubtitle1"/>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/goto_partecipalobby"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/goto_creazionelobby"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.8"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/AltroDark"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:padding="20dp"
+                android:orientation="vertical"
+                android:gravity="center" >
 
                 <ImageView
-                    android:src="@drawable/join_room"
+                    android:src="@drawable/home_join_ride"
                     android:layout_width="150dp"
                     android:layout_height="150dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_textaction_home"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unisciti ad una stanza"
-                    android:textColor="@color/PrimaryWhite"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    android:drawableEnd="@drawable/arrow_forward"/>
+                    android:drawableRight="@drawable/ic_arrow_forward"
+                    android:drawablePadding="10dp"
+                    android:text="Unisciti ad un gruppo di viaggio"
+                    android:textColor="@color/Nero"
+                    style="?attr/textAppearanceSubtitle1"/>
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
