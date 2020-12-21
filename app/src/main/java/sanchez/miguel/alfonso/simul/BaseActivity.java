@@ -107,6 +107,16 @@ abstract class BaseActivity extends AppCompatActivity {
 
     CountDownTimer alarm_countdown;
 
+
+    protected static final String PARTITO_STATE = "V1";
+    protected static final String ARRIVATO_STATE = "V2";
+    protected static final String NON_PARTITO_STATE = "G0";
+    protected static final String RIFORNIMENTI_STATE = "G1";
+    protected static final String TRAFFICO_STATE = "G2";
+    protected static final String PROBLEMI_AUTO_STATE = "G3";
+    protected static final String EMERGENZA_STATE = "R1";
+    protected static final String EMERGENZA_DETECTED = "R2";
+
     boolean check_accelerometer_anomalies(double val){
         return val >= SOGLIA_ACCELEROMETRO;
     }
@@ -397,7 +407,7 @@ abstract class BaseActivity extends AppCompatActivity {
 
                     String message = "Simul Guardian Angel System\nIncidente rilevato a questa posizione\n" + "Longitudine "+ longitude + "\nLatitudine " + latitude + "\nAltitudine " + altitude + "\nVelocità " + speed + "\nLINK\n" + location_format;
                     send_sms(prefs.getString("angel_reference","Non ancora impostato"),message);
-                    send_alarm_to_room(uid_creatore,uid_utente);
+                    send_state_to_room(uid_creatore,uid_utente,EMERGENZA_DETECTED);
                 }
             };
 
@@ -412,10 +422,10 @@ abstract class BaseActivity extends AppCompatActivity {
         alarm_countdown.cancel();
     }
 
-    private void send_alarm_to_room(String uid_creatore,String uid_utente){
+    protected void send_state_to_room(String uid_creatore, String uid_utente,String state){
         RoomsRef = FirebaseDatabase.getInstance().getReference().child("Rooms");
 
-        RoomsRef.child(uid_creatore).child("partecipanti").child(uid_utente).child("participant_state").setValue("1").addOnCompleteListener(new OnCompleteListener<Void>() {
+        RoomsRef.child(uid_creatore).child("partecipanti").child(uid_utente).child("participant_state").setValue(state).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 

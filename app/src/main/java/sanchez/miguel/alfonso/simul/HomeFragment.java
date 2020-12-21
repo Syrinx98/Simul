@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import static sanchez.miguel.alfonso.simul.BaseActivity.nickname;
+import static sanchez.miguel.alfonso.simul.BaseActivity.prefs;
+
 public class HomeFragment extends Fragment {
 
     private TextView nome;
@@ -33,7 +36,8 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         nome = v.findViewById(R.id.home_text_name);
-        nome.setText("Nickname"); //to-fix non mostra nada
+        nickname = prefs.getString("nickname","");
+        nome.setText(nickname);
 
         v.findViewById(R.id.goto_creazionelobby).setOnClickListener(new View.OnClickListener() {
             @Override

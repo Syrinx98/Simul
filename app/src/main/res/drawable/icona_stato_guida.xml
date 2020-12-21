@@ -9,5 +9,4 @@
         </shape>
     </item>
     <!-- sostituire l'icona poi dinamicamente in base allo stato di guida -->
-    <item android:drawable="@drawable/stati_ic_non_partito_color"/>
 </layer-list>
