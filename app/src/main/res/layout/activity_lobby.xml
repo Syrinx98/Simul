@@ -105,47 +105,53 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:padding="15dp"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/emergenza_btn"
                     style="@style/BottoniStatiRossi"
-                    app:icon="@drawable/stati_ic_emergenza_dimensionabile"
-                    android:text="Ho un emergenza grave" />
+                    android:visibility="visible"
+                    android:text="Ho un emergenza grave"
+                    app:icon="@drawable/stati_ic_emergenza_dimensionabile" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/problemi_auto_btn"
                     style="@style/BottoniStatiGialli"
-                    app:icon="@drawable/stati_ic_problemi_auto_dimensionabile"
-                    android:text="Ho un problema all'auto" />
+                    android:visibility="visible"
+                    android:text="Ho un problema all'auto"
+                    app:icon="@drawable/stati_ic_problemi_auto_dimensionabile" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/traffico_btn"
                     style="@style/BottoniStatiGialli"
-                    app:icon="@drawable/stati_ic_traffico_dimensionabile"
-                    android:text="Ho problemi col traffico" />
+                    android:visibility="visible"
+                    android:text="Ho problemi col traffico"
+                    app:icon="@drawable/stati_ic_traffico_dimensionabile" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pausa_rifornimenti_btn"
                     style="@style/BottoniStatiGialli"
-                    app:icon="@drawable/stati_ic_rifornimenti_dimensionabile"
-                    android:text="Ho fatto una pausa rifornimenti" />
+                    android:visibility="visible"
+                    android:text="Ho fatto una pausa rifornimenti"
+                    app:icon="@drawable/stati_ic_rifornimenti_dimensionabile" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/arrivato_btn"
                     style="@style/BottoniStatiVerdi"
-                    app:icon="@drawable/stati_ic_arrivato_dimensionabile"
-                    android:text="Sono arrivato" />
+                    android:visibility="visible"
+                    android:text="Sono arrivato"
+                    app:icon="@drawable/stati_ic_arrivato_dimensionabile" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/partito_btn"
                     style="@style/BottoniStatiVerdi"
-                    app:icon="@drawable/stati_ic_in_viaggio_dimensionabile"
-                    android:text="Sono partito" />
+                    android:visibility="visible"
+                    android:text="Sono partito"
+                    app:icon="@drawable/stati_ic_in_viaggio_dimensionabile" />
 
             </LinearLayout>
 

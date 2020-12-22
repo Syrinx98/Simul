@@ -29,7 +29,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +36,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
@@ -130,57 +128,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         persone_lobby.setLayoutManager(gridLayoutManager);
 
 
-        //settaggio listeners bottoni FAB segnala stato
-        segnala_stato_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSegnalaStatoClicked();
-            }
-        });
-        partito_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,PARTITO_STATE);
-            }
-        });
-        arrivato_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,ARRIVATO_STATE);
-            }
-        });
-        pausa_rifornimenti_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                easter++;
-                if (easter == 10){
-                    Toast.makeText(getApplicationContext(),"Pausa mmerda",Toast.LENGTH_SHORT).show();
-                }
-                send_state_to_room(current_user_id,current_user_id,RIFORNIMENTI_STATE);
-            }
-        });
-        traffico_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,TRAFFICO_STATE);
-            }
-        });
-        problemi_auto_bnt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,PROBLEMI_AUTO_STATE);
-            }
-        });
-        emergenza_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,EMERGENZA_STATE);
-            }
-        });
-
-
-
-
+        states_button_listener();
 
 
         initialize_accelerometer_and_gps();
@@ -193,6 +141,64 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             currentBestLocation = getLastBestLocation();
         }
 
+    }
+
+    private void states_button_listener(){
+
+
+        //settaggio listeners bottoni FAB segnala stato
+        segnala_stato_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSegnalaStatoClicked();
+            }
+        });
+        partito_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send_state_to_room(current_user_id,current_user_id,PARTITO_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
+        arrivato_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send_state_to_room(current_user_id,current_user_id,ARRIVATO_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
+        pausa_rifornimenti_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easter++;
+                if (easter == 10){
+                    Toast.makeText(getApplicationContext(),"Pausa mmerda",Toast.LENGTH_SHORT).show();
+                }
+                send_state_to_room(current_user_id,current_user_id,RIFORNIMENTI_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
+        traffico_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send_state_to_room(current_user_id,current_user_id,TRAFFICO_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
+        problemi_auto_bnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send_state_to_room(current_user_id,current_user_id,PROBLEMI_AUTO_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
+        emergenza_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send_state_to_room(current_user_id,current_user_id,EMERGENZA_STATE);
+                onSegnalaStatoClicked();
+            }
+        });
     }
 
 
@@ -215,51 +221,80 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
     }
 
-    private void onSegnalaStatoClicked() {
-        setVisibilityStati(cliccato);
-        setAnimationStati(cliccato);
+    private void onSegnalaStatoClicked(){
+
+        //per side-effect
+        states_assemble();
         cliccato = !cliccato;
     }
 
+    private void states_assemble(){
+        if(!cliccato){
+            segnala_stato_btn.startAnimation(rotate_open);
+            cardview_bottoni_stati.startAnimation(from_bottom);
+            from_bottom.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    cardview_bottoni_stati.setVisibility(View.VISIBLE);
+                }
 
-    private void setVisibilityStati(Boolean cliccato) {
-        if (!cliccato) {
-            cardview_bottoni_stati.setVisibility(View.VISIBLE);
-            partito_btn.setVisibility(View.VISIBLE);
-            arrivato_btn.setVisibility(View.VISIBLE);
-            pausa_rifornimenti_btn.setVisibility(View.VISIBLE);
-            traffico_btn.setVisibility(View.VISIBLE);
-            problemi_auto_bnt.setVisibility(View.VISIBLE);
-            emergenza_btn.setVisibility(View.VISIBLE);
-        } else {
-            cardview_bottoni_stati.setVisibility(View.GONE);
-            partito_btn.setVisibility(View.INVISIBLE);
-            arrivato_btn.setVisibility(View.INVISIBLE);
-            pausa_rifornimenti_btn.setVisibility(View.INVISIBLE);
-            traffico_btn.setVisibility(View.INVISIBLE);
-            problemi_auto_bnt.setVisibility(View.INVISIBLE);
-            emergenza_btn.setVisibility(View.INVISIBLE);
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    states_appear();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+
+
+        }
+        else{
+            segnala_stato_btn.startAnimation(rotate_close);
+            cardview_bottoni_stati.startAnimation(to_bottom);
+            to_bottom.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) { }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    cardview_bottoni_stati.setVisibility(View.GONE);
+                    states_disappear();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
         }
     }
 
-    private void setAnimationStati(Boolean cliccato) {
-        if (!cliccato) {
-            segnala_stato_btn.startAnimation(rotate_open);
-            partito_btn.startAnimation(from_bottom);
-            arrivato_btn.startAnimation(from_bottom);
-            pausa_rifornimenti_btn.startAnimation(from_bottom);
-            traffico_btn.startAnimation(from_bottom);
-            problemi_auto_bnt.startAnimation(from_bottom);
-            emergenza_btn.startAnimation(from_bottom);
-        } else {
-            segnala_stato_btn.startAnimation(rotate_close);
-            partito_btn.startAnimation(to_bottom);
-            arrivato_btn.startAnimation(to_bottom);
-            pausa_rifornimenti_btn.startAnimation(to_bottom);
-            traffico_btn.startAnimation(to_bottom);
-            problemi_auto_bnt.startAnimation(to_bottom);
-            emergenza_btn.startAnimation(to_bottom);
-        }
+    private void states_appear(){
+        partito_btn.setVisibility(View.VISIBLE);
+        partito_btn.setEnabled(true);
+        arrivato_btn.setVisibility(View.VISIBLE);
+        arrivato_btn.setEnabled(true);
+        pausa_rifornimenti_btn.setVisibility(View.VISIBLE);
+        pausa_rifornimenti_btn.setEnabled(true);
+        traffico_btn.setVisibility(View.VISIBLE);
+        traffico_btn.setEnabled(true);
+        problemi_auto_bnt.setVisibility(View.VISIBLE);
+        problemi_auto_bnt.setEnabled(true);
+        emergenza_btn.setVisibility(View.VISIBLE);
+        emergenza_btn.setEnabled(true);
+    }
+
+    private void states_disappear(){
+        cardview_bottoni_stati.setVisibility(View.GONE);
+        partito_btn.setEnabled(false);
+        arrivato_btn.setEnabled(false);
+        pausa_rifornimenti_btn.setEnabled(false);
+        traffico_btn.setEnabled(false);
+        problemi_auto_bnt.setEnabled(false);
+        emergenza_btn.setEnabled(false);
     }
 
 
@@ -284,7 +319,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             @Override
             protected void onBindViewHolder(@NonNull LobbyPartecipanteActivity.LobbyHolderPartecipante holder, int position, @NonNull LobbyQuery model) {
 
-                if (!model.getParticipant_name().equals(nickname)) {
+                if (!model.getParticipant_name().equals(nickname)){
                     Picasso.get()
                             .load(model.getParticipant_image())
                             .transform(new CropCircleTransformation())
@@ -294,83 +329,75 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
                     holder.nome.setText(model.getParticipant_name());
 
 
+
                     switch (model.getParticipant_state()){
                         case PARTITO_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            break;
-
                         case ARRIVATO_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
+                            holder.immagine.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_verde));
                             break;
 
                         case NON_PARTITO_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            break;
-
                         case RIFORNIMENTI_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            break;
-
                         case TRAFFICO_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            break;
-
                         case PROBLEMI_AUTO_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
+                            holder.immagine.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_giallo));
                             break;
 
                         case EMERGENZA_STATE:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                            holder.immagine.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));
+                            Toast.makeText(LobbyPartecipanteActivity.this,"Emergenza lanciata agli altri membri della stanza",Toast.LENGTH_LONG).show();
                             break;
 
                         case EMERGENZA_DETECTED:
-                            holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                            holder.immagine.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));
+                            Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione! \n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                     }
 
-                } else {
-                    //Caso in cui scarico le informazioni di me stesso, in questo caso l'update verrà fatto in me stesso
-                    RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+
+                }
+                else{
+
+                    RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
                     param.height = 0;
-                    param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                    holder.itemView.setVisibility(View.VISIBLE);
+                    param.width = 0;
+                    holder.itemView.setVisibility(View.GONE);
+
 
                     switch (model.getParticipant_state()){
                         case PARTITO_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_in_viaggio_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_verde));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_in_viaggio_dimensionabile));
                             break;
 
                         case ARRIVATO_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_arrivato_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_verde));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_arrivato_dimensionabile));
                             break;
                         case NON_PARTITO_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_non_partito_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_giallo));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_non_partito_dimensionabile));
                             break;
                         case RIFORNIMENTI_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_rifornimenti_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_giallo));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_rifornimenti_dimensionabile));
                             break;
                         case TRAFFICO_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_traffico_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_giallo));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_traffico_dimensionabile));
                             break;
                         case PROBLEMI_AUTO_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_problemi_auto_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_giallo));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_problemi_auto_dimensionabile));
                             break;
                         case EMERGENZA_STATE:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_emergenza_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_emergenza_dimensionabile));
                             Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                         case EMERGENZA_DETECTED:
-                            creator_img.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            icona_stato.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_incidente_dimensionabile));
+                            creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));
+                            icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_incidente_dimensionabile));
                             Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                     }
