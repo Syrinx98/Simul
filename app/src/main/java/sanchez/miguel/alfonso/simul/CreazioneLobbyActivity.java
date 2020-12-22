@@ -134,7 +134,7 @@ public class CreazioneLobbyActivity extends BaseActivity{
         creator_as_participant_map.put("participant_name", nickname);
         creator_as_participant_map.put("participant_image",link_immmagine_dentro_db);
         creator_as_participant_map.put("participant_speed","00.00");
-        creator_as_participant_map.put("participant_state","0");
+        creator_as_participant_map.put("participant_state",NON_PARTITO_STATE);
 
         RoomsRef.child(current_user_id).child("partecipanti").child(current_user_id).updateChildren(creator_as_participant_map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -62,7 +63,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     Animation rotate_open, rotate_close, from_bottom, to_bottom;
     MaterialCardView cardview_bottoni_stati;
 
-    Dialog stato_overlay;
+
     //Variabili per accelerometro e GPS
     SensorManager sensorManager;
     Sensor sensor;
@@ -139,14 +140,12 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         partito_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Partito",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,PARTITO_STATE);
             }
         });
         arrivato_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Arrivato",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,ARRIVATO_STATE);
             }
         });
@@ -157,28 +156,24 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
                 if (easter == 10){
                     Toast.makeText(getApplicationContext(),"Pausa mmerda",Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(),"Pausa rifornimenti",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,RIFORNIMENTI_STATE);
             }
         });
         traffico_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Problemi traffico",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,TRAFFICO_STATE);
             }
         });
         problemi_auto_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Problemi auto",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,PROBLEMI_AUTO_STATE);
             }
         });
         emergenza_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Emergenza !!!",Toast.LENGTH_SHORT).show();
                 send_state_to_room(current_user_id,current_user_id,EMERGENZA_STATE);
             }
         });
@@ -298,49 +293,39 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
                     holder.nome.setText(model.getParticipant_name());
 
-                    ImageView temp_icon;
+
                     switch (model.getParticipant_state()){
                         case PARTITO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_in_viaggio_dimensionabile));
                             break;
 
                         case ARRIVATO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_arrivato_dimensionabile));
                             break;
+
                         case NON_PARTITO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_non_partito_dimensionabile));
                             break;
+
                         case RIFORNIMENTI_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_rifornimenti_dimensionabile));
                             break;
+
                         case TRAFFICO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_traffico_dimensionabile));
                             break;
+
                         case PROBLEMI_AUTO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_problemi_auto_dimensionabile));
                             break;
+
                         case EMERGENZA_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_emergenza_dimensionabile));
                             Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
+
                         case EMERGENZA_DETECTED:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_incidente_dimensionabile));
                             Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                     }
@@ -419,23 +404,24 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPopup(nome.getText().toString(), immagine);
+                    showPopup(nome.getText().toString(), immagine,immagine.getBackground());
                 }
             });
         }
     }
 
-    private void showPopup(String nome, ImageView immagine) {
+    private void showPopup(String nome, ImageView immagine, Drawable background) {
 
-        stato_overlay = new Dialog(this);
+        Dialog stato_overlay = new Dialog(this);
 
         stato_overlay.setContentView(R.layout.card_stato_altrui_lobby);
 
-        TextView nome_card = stato_overlay.findViewById(R.id.partecipante_name);
-        nome_card.setText(nome);
+        TextView temp_nome_card = stato_overlay.findViewById(R.id.partecipante_name);
+        ImageView temp_immagine_card = stato_overlay.findViewById(R.id.partecipante_immagine);
 
-        ImageView immagine_card = stato_overlay.findViewById(R.id.partecipante_immagine);
-        immagine_card.setImageDrawable(immagine.getDrawable());
+        temp_nome_card.setText(nome);
+        temp_immagine_card.setImageDrawable(immagine.getDrawable());
+        temp_immagine_card.setBackground(background);
 
         stato_overlay.show();
         stato_overlay.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);

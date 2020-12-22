@@ -58,7 +58,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     RecyclerView persone_lobby;
 
-    Dialog stato_overlay;
+
 
     //variabili Stati
     FloatingActionButton segnala_stato_btn;
@@ -139,7 +139,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
         persone_lobby.setLayoutManager(gridLayoutManager);
 
-        stato_overlay = new Dialog(this);
+
 
         //settaggio listeners bottoni FAB segnala stato
         segnala_stato_btn.setOnClickListener(new View.OnClickListener() {
@@ -271,45 +271,37 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
                     switch (model.getParticipant_state()){
                         case PARTITO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_in_viaggio_dimensionabile));
+
                             break;
 
                         case ARRIVATO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_verde));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_arrivato_dimensionabile));
+
                             break;
                         case NON_PARTITO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_non_partito_dimensionabile));
+
                             break;
                         case RIFORNIMENTI_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_rifornimenti_dimensionabile));
+
                             break;
                         case TRAFFICO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_traffico_dimensionabile));
+
                             break;
                         case PROBLEMI_AUTO_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_giallo));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_problemi_auto_dimensionabile));
+
                             break;
                         case EMERGENZA_STATE:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_emergenza_dimensionabile));
+
                             Toast.makeText(LobbyCreatoreActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                         case EMERGENZA_DETECTED:
                             holder.immagine.setBackground(getResources().getDrawable(R.drawable.immagine_profilo_ring_rosso));
-                            temp_icon = stato_overlay.findViewById(R.id.icona_stato_lobby_partecipante);
-                            temp_icon.setImageDrawable(getResources().getDrawable(R.drawable.stati_ic_incidente_dimensionabile));
+
                             Toast.makeText(LobbyCreatoreActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
                             break;
                     }
@@ -404,7 +396,8 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     private void showPopup(String nome, ImageView immagine){
 
-
+        Dialog stato_overlay = new Dialog(this);
+        stato_overlay.setContentView(R.layout.card_stato_altrui_lobby);
 
         TextView nome_card = stato_overlay.findViewById(R.id.partecipante_name);
         nome_card.setText(nome);
