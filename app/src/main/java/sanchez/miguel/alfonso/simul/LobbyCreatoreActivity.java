@@ -45,7 +45,7 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class LobbyPartecipanteActivity extends BaseActivity implements LocationListener, SensorEventListener {
+public class LobbyCreatoreActivity extends BaseActivity implements LocationListener, SensorEventListener {
 
     String room_id;
 
