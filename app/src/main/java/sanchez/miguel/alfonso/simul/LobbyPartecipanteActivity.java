@@ -105,8 +105,6 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         emergenza_btn = findViewById(R.id.emergenza_btn);
 
 
-
-
         rotate_open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
         rotate_close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
         from_bottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
@@ -156,14 +154,14 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         partito_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,PARTITO_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,PARTITO_STATE);
                 onSegnalaStatoClicked();
             }
         });
         arrivato_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,ARRIVATO_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,ARRIVATO_STATE);
                 onSegnalaStatoClicked();
             }
         });
@@ -174,28 +172,28 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
                 if (easter == 10){
                     Toast.makeText(getApplicationContext(),"Pausa mmerda",Toast.LENGTH_SHORT).show();
                 }
-                send_state_to_room(current_user_id,current_user_id,RIFORNIMENTI_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,RIFORNIMENTI_STATE);
                 onSegnalaStatoClicked();
             }
         });
         traffico_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,TRAFFICO_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,TRAFFICO_STATE);
                 onSegnalaStatoClicked();
             }
         });
         problemi_auto_bnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,PROBLEMI_AUTO_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,PROBLEMI_AUTO_STATE);
                 onSegnalaStatoClicked();
             }
         });
         emergenza_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send_state_to_room(current_user_id,current_user_id,EMERGENZA_STATE);
+                send_state_to_room(creatore_lobby,current_user_id,EMERGENZA_STATE);
                 onSegnalaStatoClicked();
             }
         });
@@ -393,7 +391,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
                         case EMERGENZA_STATE:
                             creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));
                             icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.stati_ic_emergenza_dimensionabile));
-                            Toast.makeText(LobbyPartecipanteActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LobbyPartecipanteActivity.this,"Mando subito un allarme agli altri membri",Toast.LENGTH_LONG).show();
                             break;
                         case EMERGENZA_DETECTED:
                             creator_img.setBackground(ContextCompat.getDrawable(LobbyPartecipanteActivity.this,R.drawable.immagine_profilo_ring_rosso));

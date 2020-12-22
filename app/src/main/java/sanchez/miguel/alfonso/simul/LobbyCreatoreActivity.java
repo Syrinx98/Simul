@@ -328,7 +328,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
                         case EMERGENZA_STATE:
                             creator_img.setBackground(ContextCompat.getDrawable(LobbyCreatoreActivity.this,R.drawable.immagine_profilo_ring_rosso));
                             icona_stato.setImageDrawable(ContextCompat.getDrawable(LobbyCreatoreActivity.this,R.drawable.stati_ic_emergenza_dimensionabile));
-                            Toast.makeText(LobbyCreatoreActivity.this,"Attenzione!\n" + model.getParticipant_name() + "potrebbe essere in pericolo!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LobbyCreatoreActivity.this,"Mando subito un allarme agli altri membri",Toast.LENGTH_LONG).show();
                             break;
                         case EMERGENZA_DETECTED:
                             creator_img.setBackground(ContextCompat.getDrawable(LobbyCreatoreActivity.this,R.drawable.immagine_profilo_ring_rosso));
