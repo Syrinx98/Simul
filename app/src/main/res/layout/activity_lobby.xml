@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp">
+                android:padding="10dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/emergenza_btn"
