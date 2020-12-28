@@ -195,18 +195,13 @@
     <!-- stili di fish -->
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/Bianco</item>
-        <!--
-        <item name="android:fontFamily">@font/assistant_light</item>
-        <item name="titleTextStyle">@font/assistant</item>
-        <item name="titleTextAppearance">@font/assistant_bold</item>
-        -->
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/primaryWhite</item>
+        <item name="android:textColor">@color/primaryWhite</item>
+        <item name="android:background">@color/colorSurface</item>
     </style>
 
     <style name="CustomProgressBarTheme">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
         <item name="android:progressBarStyle">@style/Widget.AppCompat.ProgressBar</item>
     </style>
     <style name="AppTheme.NoActionBar">

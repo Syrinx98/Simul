@@ -1,0 +1,445 @@
+Index: app/src/main/java/sanchez/miguel/alfonso/simul/BaseActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package sanchez.miguel.alfonso.simul;\r\n\r\nimport android.app.Activity;\r\nimport android.app.Dialog;\r\nimport android.app.ProgressDialog;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.ColorDrawable;\r\nimport android.location.Location;\r\nimport android.net.Uri;\r\nimport android.os.CountDownTimer;\r\nimport android.telephony.SmsManager;\r\nimport android.text.Editable;\r\nimport android.text.TextUtils;\r\nimport android.text.TextWatcher;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.view.Window;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageButton;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.android.gms.auth.api.signin.GoogleSignIn;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.google.firebase.storage.OnProgressListener;\r\nimport com.google.firebase.storage.StorageReference;\r\nimport com.google.firebase.storage.UploadTask;\r\n\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.ArrayList;\r\nimport java.util.Calendar;\r\nimport java.util.HashMap;\r\nimport java.util.Locale;\r\nimport java.util.Objects;\r\nimport java.util.TimeZone;\r\n\r\nabstract class BaseActivity extends AppCompatActivity {\r\n\r\n    //Google singIn release key presa dall'api console\r\n    public static final String web_client_for_google_sign_in = \"436100610708-gfrks3cgfganfa8tgj3ic54us9kempjm.apps.googleusercontent.com\";\r\n\r\n    //Inizializzo questi valori nell'attività di login prima del controllo\r\n\r\n    public static SharedPreferences prefs;\r\n    public static SharedPreferences.Editor editor;\r\n    public static FirebaseAuth mAuth;\r\n    public static FirebaseUser User;\r\n\r\n    //Informazioni Utente\r\n    public static String current_user_id;\r\n    public static String data_attuale, ora_attuale, data_e_ora;\r\n    public static String data_creazione_account;\r\n    public static String link_immmagine_dentro_db;\r\n    public static String nickname;\r\n    public static String email;\r\n    public static String angel_name;\r\n    public static String angel_reference;\r\n\r\n    //Variabili per il client in locale di google sing in\r\n    public GoogleSignInOptions gso;\r\n    public static GoogleSignInClient mGoogleSignInClient;\r\n    //Intent del sign in (come avviare un activity)\r\n    public int RC_SIGN_IN;\r\n    public Intent signInIntent;\r\n\r\n    //Oggetti pubblici\r\n    public static ProgressDialog public_progressdialog;\r\n    public static Dialog dialog;\r\n\r\n    //Database References : storage\r\n    public static StorageReference image_storage, immagine_utente;\r\n\r\n    //Database References : realtime database\r\n    public static DatabaseReference NicknameRef;\r\n    public static DatabaseReference UsersRef;\r\n    public static DatabaseReference CurrentUserRef;\r\n    public static DatabaseReference RoomsRef;\r\n\r\n    //Variabili necessarie per i metodi pubblici\r\n    private int registration_three_way_check;\r\n\r\n\r\n    //valori soglia accelerometro e velocità\r\n    public static final double SOGLIA_ACCELEROMETRO = 50.0;\r\n    public static final double SOGLIA_VELOCITA_KM_H = 0;\r\n    public static final int ALARM_COUNTDOWN_MAX_TIME = 10000;\r\n\r\n    private boolean dialog_is_already_opened = false;\r\n\r\n    CountDownTimer alarm_countdown;\r\n\r\n\r\n    protected static final String PARTITO_STATE = \"V1\";\r\n    protected static final String ARRIVATO_STATE = \"V2\";\r\n    protected static final String NON_PARTITO_STATE = \"G0\";\r\n    protected static final String RIFORNIMENTI_STATE = \"G1\";\r\n    protected static final String TRAFFICO_STATE = \"G2\";\r\n    protected static final String PROBLEMI_AUTO_STATE = \"G3\";\r\n    protected static final String EMERGENZA_STATE = \"R1\";\r\n    protected static final String EMERGENZA_DETECTED = \"R2\";\r\n\r\n    boolean check_accelerometer_anomalies(double val){\r\n        return val >= SOGLIA_ACCELEROMETRO;\r\n    }\r\n\r\n    boolean check_velocity_anomalies(double val){\r\n        return val >= SOGLIA_VELOCITA_KM_H;\r\n    }\r\n\r\n\r\n    protected void prendi_user_id_attuale() {\r\n        mAuth = FirebaseAuth.getInstance();\r\n        User = mAuth.getCurrentUser();\r\n        current_user_id = Objects.requireNonNull(Objects.requireNonNull(User).getUid());\r\n    }\r\n\r\n    //controllo se ho un utente connesso attualmente\r\n    protected boolean check_connection() {\r\n        return (mAuth.getCurrentUser() != null);\r\n    }\r\n\r\n    //controllo se mi sono già loggato in precedenza\r\n    protected boolean check_login() {\r\n        return prefs.getBoolean(\"hasLogin\", false);\r\n    }\r\n\r\n    //controllo se mi sono già registrato in precedenza\r\n    protected boolean check_registration() {\r\n        return prefs.getBoolean(\"hasRegistration\", false);\r\n    }\r\n\r\n\r\n    protected void editext_listener(final Context context, final EditText nick_editext) {\r\n        nick_editext.addTextChangedListener(new TextWatcher() {\r\n            @Override\r\n            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }\r\n            @Override\r\n            public void onTextChanged(CharSequence s, int start, int before, int count) {\r\n                if (nick_check(context,nick_editext)) {\r\n                    check_nick_existance(context,nick_editext);\r\n                }\r\n            }\r\n            @Override\r\n            public void afterTextChanged(Editable s) { }\r\n        });\r\n    }\r\n\r\n    protected void initilize_google_variables(){\r\n        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\r\n                .requestIdToken(web_client_for_google_sign_in)\r\n                .requestEmail()\r\n                .build();\r\n        mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);\r\n        RC_SIGN_IN = 1;\r\n        signInIntent = mGoogleSignInClient.getSignInIntent();\r\n    }\r\n\r\n    protected boolean nick_check(Context context, EditText NickText){\r\n        final String nickname = NickText.getText().toString();\r\n        if (TextUtils.isEmpty(nickname)){\r\n            NickText.setBackgroundResource(R.drawable.fish_red_stroke);\r\n            return false;\r\n        }\r\n        else if (nickname.length() < 3){\r\n            NickText.setBackgroundResource(R.drawable.fish_red_stroke);\r\n            return false;\r\n        }\r\n        else if (nickname.contains(\" \")){\r\n            Toast.makeText(context, \"Il nickname non può contenere spazi\", Toast.LENGTH_SHORT).show();\r\n            NickText.setBackgroundResource(R.drawable.fish_red_stroke);\r\n            return false;\r\n        }\r\n        else {\r\n            NickText.setBackgroundResource(R.drawable.fish_green_stroke);\r\n            return true;\r\n        }\r\n    }\r\n\r\n\r\n    protected void check_nick_existance(final Context context, final EditText nick_editext) {\r\n        if (check_connection()) {\r\n            final String nickname = nick_editext.getText().toString();\r\n            NicknameRef.addListenerForSingleValueEvent(new ValueEventListener() {\r\n                @Override\r\n                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {\r\n                    if (dataSnapshot.exists()) {\r\n                        if (dataSnapshot.hasChild(nickname)) {\r\n                            if (!TextUtils.isEmpty(nickname)) {\r\n                                Toast.makeText(context, \"Il nickname scelto è già presente\", Toast.LENGTH_SHORT).show();\r\n                                //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin\r\n                                //Basta che modifichi i file drawable\r\n                                nick_editext.setBackgroundResource(R.drawable.fish_red_stroke);\r\n                            }\r\n                        } else {\r\n                            //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin\r\n                            //Basta che modifichi i file drawable \r\n                            nick_editext.setBackgroundResource(R.drawable.fish_green_stroke);\r\n                        }\r\n                    }\r\n                    NicknameRef.removeEventListener(this);\r\n                }\r\n\r\n                @Override\r\n                public void onCancelled(@NonNull DatabaseError databaseError) {\r\n                }\r\n            });\r\n        } else {\r\n            Toast.makeText(context, \"Connessione persa\", Toast.LENGTH_SHORT).show();\r\n        }\r\n    }\r\n\r\n    protected void prendi_data_e_ora_attuale() {\r\n        prendi_data_attuale();\r\n        prendi_ora_attuale();\r\n        data_e_ora = data_attuale + \" \" + ora_attuale;\r\n    }\r\n\r\n    protected void prendi_data_attuale() {\r\n        Calendar calldate = Calendar.getInstance(TimeZone.getDefault());\r\n        SimpleDateFormat currdate = new SimpleDateFormat(\"dd-MM-yyyy\", Locale.getDefault());\r\n        data_attuale = currdate.format(calldate.getTime());\r\n    }\r\n\r\n    protected void prendi_ora_attuale() {\r\n        Calendar calldate = Calendar.getInstance(TimeZone.getDefault());\r\n        SimpleDateFormat currtime = new SimpleDateFormat(\"HH:mm:ss\", Locale.getDefault());\r\n        ora_attuale = currtime.format(calldate.getTime());\r\n    }\r\n\r\n    protected void metto_immagine_in_database(final Context context, Uri local_uri, final String mode,final String nickname) {\r\n\r\n        registration_three_way_check = 0;\r\n        prendi_user_id_attuale();\r\n        prendi_data_e_ora_attuale();\r\n\r\n        public_progressdialog = new ProgressDialog(context);\r\n        public_progressdialog.show();\r\n        public_progressdialog.setCanceledOnTouchOutside(false);\r\n        public_progressdialog.setTitle(\"Verificando i tuoi dati...\");\r\n\r\n        immagine_utente = image_storage.child(current_user_id + \".jpg\");\r\n        immagine_utente.putFile(Objects.requireNonNull(local_uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {\r\n            @Override\r\n            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {\r\n                public_progressdialog.dismiss();\r\n                immagine_utente.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {\r\n                    @Override\r\n                    public void onSuccess(Uri uri) {\r\n                        link_immmagine_dentro_db = uri.toString();\r\n                        if (mode.equals(\"registrazione\")){\r\n                            metto_altri_dati(context,nickname);\r\n                        }\r\n                    }\r\n                });\r\n\r\n            }\r\n        }).addOnFailureListener(new OnFailureListener() {\r\n            @Override\r\n            public void onFailure(@NonNull Exception e) {\r\n                Toast.makeText(context, \"sis \" + e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                public_progressdialog.dismiss();\r\n            }\r\n        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {\r\n            @Override\r\n            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {\r\n                //displaying the upload progress\r\n                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();\r\n                public_progressdialog.setMessage(\"Caricamento \" + ((int) progress) + \"%...\");\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n\r\n    private void metto_altri_dati(final Context context,final String nickname){\r\n\r\n        prendi_data_e_ora_attuale();\r\n        prendi_user_id_attuale();\r\n\r\n        HashMap<String, Object> userMap = new HashMap<>();\r\n\r\n        registration_three_way_check = registration_three_way_check + 1;\r\n        userMap.put(\"uid\", current_user_id);\r\n        userMap.put(\"data\", data_attuale);\r\n        userMap.put(\"ora\", ora_attuale);\r\n        userMap.put(\"nickname\", nickname);\r\n        userMap.put(\"email\",prefs.getString(\"email\",\"Mail non trovata\"));\r\n        userMap.put(\"user_image\",link_immmagine_dentro_db);\r\n        //L'utente lo imposterà dopo, questo ci da la possibilità di vedere quanti effettivamente usano la funzione\r\n        userMap.put(\"guardian_angel_name\",\"Non ancora impostato\");\r\n        userMap.put(\"guardian_angel_reference\",\"Non ancora impostato\");\r\n\r\n\r\n        //Ora creo un figlio di Users, il figlio sarà l'id univoco\r\n        CurrentUserRef = UsersRef.child(current_user_id);\r\n        CurrentUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task task) {\r\n                if (task.isSuccessful()) {\r\n                    registration_three_way_check = registration_three_way_check + 1;\r\n                    editor.putBoolean(\"hasRegistration\", true);\r\n                    editor.apply();\r\n                } else {\r\n                    String message = Objects.requireNonNull(task.getException()).getMessage();\r\n                    Toast.makeText(context, \"Errore: \" + message, Toast.LENGTH_SHORT).show();\r\n                }\r\n            }\r\n        });\r\n        //Metto info in Nicknames\r\n        NicknameRef.child(nickname).setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<Void> task) {\r\n                if (task.isSuccessful()) {\r\n                    registration_three_way_check = registration_three_way_check + 1;\r\n                    if (registration_three_way_check == 3){\r\n                        Toast.makeText(context, \"Account creato correttamente\", Toast.LENGTH_SHORT).show();\r\n                        finish();\r\n                    }\r\n                    else {\r\n                        String message = Objects.requireNonNull(task.getException()).getMessage();\r\n                        Toast.makeText(context, \"Errore: \" + message, Toast.LENGTH_SHORT).show();\r\n                    }\r\n                }\r\n            }\r\n        });\r\n    }\r\n\r\n    protected void update_current_speed_in_database(String uid_creatore,String uid_utente,String speed){\r\n\r\n        RoomsRef = FirebaseDatabase.getInstance().getReference().child(\"Rooms\");\r\n\r\n        RoomsRef.child(uid_creatore).child(\"partecipanti\").child(uid_utente).child(\"participant_speed\").setValue(speed).addOnCompleteListener(new OnCompleteListener<Void>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<Void> task) {\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n    protected void pop_alarm_possible_sinister(Context context, final String uid_creatore, final String uid_utente, final Location current_location){\r\n\r\n        //controllo se il dialog non sia già aperto\r\n        if (!dialog_is_already_opened){\r\n\r\n            dialog_is_already_opened = true;\r\n            dialog = new Dialog(context);\r\n            dialog.setCancelable(false);\r\n            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);\r\n            dialog.setContentView(R.layout.sinister_alarm_popup_layout);\r\n            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));\r\n\r\n\r\n            if (!(context instanceof Activity && ((Activity) context).isFinishing())) {\r\n                dialog.show();\r\n            }\r\n\r\n            // set the custom dialog components - text, image and button\r\n            ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);\r\n            TextView t = dialog.findViewById(R.id.alarm_popup_message);\r\n            final TextView time = dialog.findViewById(R.id.countdown_time);\r\n\r\n            t.setText(\"Hey!\\nTutto ok?\");\r\n            confirm.setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View v) {\r\n                    close_dialog();\r\n                }\r\n            });\r\n\r\n            //Inizio il countdown\r\n            alarm_countdown = new CountDownTimer(ALARM_COUNTDOWN_MAX_TIME,500) {\r\n                @Override\r\n                public void onTick(long millisUntilFinished) {\r\n                    String local_time = (millisUntilFinished / 1000) + \"\";\r\n                    time.setText(local_time);\r\n                }\r\n\r\n                @Override\r\n                public void onFinish() {\r\n                    close_dialog();\r\n                    String location_format = \"http://maps.google.com/?q=\" + current_location.getLatitude() + \",\" + current_location.getLongitude();\r\n                    String longitude = current_location.getLongitude() + \"\";\r\n                    String latitude = current_location.getLatitude() + \"\";\r\n                    String altitude = current_location.getAltitude() + \"\";\r\n                    String speed = current_location.getSpeed() + \"\";\r\n                    String time = current_location.getTime() + \"\";\r\n                    Log.v(\"CIAO\",\"longitude \"+ longitude + \"\\nlatitude \" + latitude + \"\\naltitude \" + altitude + \"\\nspeed \" + speed + \"\\nora \" + time);\r\n\r\n                    String message = \"Simul Guardian Angel System\\nIncidente rilevato a questa posizione\\n\" + \"Longitudine \"+ longitude + \"\\nLatitudine \" + latitude + \"\\nAltitudine \" + altitude + \"\\nVelocità \" + speed + \"\\nLINK\\n\" + location_format;\r\n                    send_sms(prefs.getString(\"angel_reference\",\"Non ancora impostato\"),message);\r\n                    send_state_to_room(uid_creatore,uid_utente,EMERGENZA_DETECTED);\r\n                }\r\n            };\r\n\r\n\r\n            alarm_countdown.start();\r\n        }\r\n    }\r\n\r\n    private void close_dialog(){\r\n        dialog_is_already_opened = false;\r\n        dialog.dismiss();\r\n        alarm_countdown.cancel();\r\n    }\r\n\r\n    protected void send_state_to_room(String uid_creatore, String uid_utente,String state){\r\n        RoomsRef = FirebaseDatabase.getInstance().getReference().child(\"Rooms\");\r\n\r\n        RoomsRef.child(uid_creatore).child(\"partecipanti\").child(uid_utente).child(\"participant_state\").setValue(state).addOnCompleteListener(new OnCompleteListener<Void>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<Void> task) {\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n\r\n    public void send_sms(String number,String message){\r\n\r\n        SmsManager mySmsManager = SmsManager.getDefault();\r\n\r\n        ArrayList<String> parts = mySmsManager.divideMessage(message);\r\n        mySmsManager.sendMultipartTextMessage(number,null, parts, null, null);\r\n    }\r\n\r\n\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/sanchez/miguel/alfonso/simul/BaseActivity.java	(revision 5e286c261b9dd8e25769d5c7f626f616ebf8a9d3)
++++ app/src/main/java/sanchez/miguel/alfonso/simul/BaseActivity.java	(date 1609173693893)
+@@ -1,5 +1,9 @@
+ package sanchez.miguel.alfonso.simul;
+ 
++import android.animation.ArgbEvaluator;
++import android.animation.ObjectAnimator;
++import android.animation.PropertyValuesHolder;
++import android.animation.ValueAnimator;
+ import android.app.Activity;
+ import android.app.Dialog;
+ import android.app.ProgressDialog;
+@@ -11,6 +15,7 @@
+ import android.location.Location;
+ import android.net.Uri;
+ import android.os.CountDownTimer;
++import android.os.Handler;
+ import android.telephony.SmsManager;
+ import android.text.Editable;
+ import android.text.TextUtils;
+@@ -18,6 +23,9 @@
+ import android.util.Log;
+ import android.view.View;
+ import android.view.Window;
++import android.view.WindowManager;
++import android.view.animation.Animation;
++import android.view.animation.AnimationUtils;
+ import android.widget.EditText;
+ import android.widget.ImageButton;
+ import android.widget.TextView;
+@@ -25,6 +33,7 @@
+ 
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
++import androidx.core.content.ContextCompat;
+ 
+ import com.google.android.gms.auth.api.signin.GoogleSignIn;
+ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+@@ -33,6 +42,7 @@
+ import com.google.android.gms.tasks.OnFailureListener;
+ import com.google.android.gms.tasks.OnSuccessListener;
+ import com.google.android.gms.tasks.Task;
++import com.google.android.material.card.MaterialCardView;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.DataSnapshot;
+@@ -364,22 +374,40 @@
+             dialog_is_already_opened = true;
+             dialog = new Dialog(context);
+             dialog.setCancelable(false);
+-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+             dialog.setContentView(R.layout.sinister_alarm_popup_layout);
+-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+-
+ 
+             if (!(context instanceof Activity && ((Activity) context).isFinishing())) {
+                 dialog.show();
+             }
+ 
++            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
++            final View view = dialog.getWindow().getDecorView();
++            view.setBackgroundResource(android.R.color.transparent);
++
+             // set the custom dialog components - text, image and button
+-            ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);
++            final MaterialCardView container_sinister = dialog.findViewById(R.id.container_sinister);
++            final MaterialCardView tappost = dialog.findViewById(R.id.imfinethanks_sinister);
+             TextView t = dialog.findViewById(R.id.alarm_popup_message);
+             final TextView time = dialog.findViewById(R.id.countdown_time);
+ 
++            Animation pulse = AnimationUtils.loadAnimation(context, R.anim.pulse_sinister);
++            int colorFrom = ContextCompat.getColor(context, R.color.colorSurface);
++            int colorTo = ContextCompat.getColor(context, R.color.RossoAlpha);
++            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
++            colorAnimation.setDuration(2000); // milliseconds
++            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
++                @Override
++                public void onAnimationUpdate(ValueAnimator animator) {
++                    container_sinister.setCardBackgroundColor((int) animator.getAnimatedValue());
++                }
++            });
++            colorAnimation.setRepeatCount(20);
++            container_sinister.startAnimation(pulse);
++            colorAnimation.start();
++
+             t.setText("Hey!\nTutto ok?");
+-            confirm.setOnClickListener(new View.OnClickListener() {
++
++            tappost.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     close_dialog();
+@@ -411,7 +439,6 @@
+                 }
+             };
+ 
+-
+             alarm_countdown.start();
+         }
+     }
+@@ -442,8 +469,6 @@
+         mySmsManager.sendMultipartTextMessage(number,null, parts, null, null);
+     }
+ 
+-
+-
+ }
+ 
+ 
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<resources>\r\n    <color name=\"colorPrimary\">#81d4fa</color>\r\n    <color name=\"colorPrimaryDark\">#4ba3c7</color>\r\n    <color name=\"primaryWhite\">#DEFFFFFF</color>\r\n    <color name=\"secondaryWhite\">#99FFFFFF</color>\r\n    <color name=\"tertiaryWhite\">#40FFFFFF</color>\r\n    <color name=\"colorBackground\">#171F25</color>\r\n    <color name=\"colorSurface\">#1A2A34</color>\r\n    <color name=\"darkGrey\">#1D3240</color>\r\n\r\n    <color name=\"Bianco\">#FFFFFF</color>\r\n    <color name=\"Nero\">#000000</color>\r\n\r\n    <color name=\"Verde\">#81F279</color>\r\n    <color name=\"Giallo\">#FFDB67</color>\r\n    <color name=\"Rosso\">#FF6565</color>\r\n\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(revision 5e286c261b9dd8e25769d5c7f626f616ebf8a9d3)
++++ app/src/main/res/values/colors.xml	(date 1609173846087)
+@@ -16,4 +16,6 @@
+     <color name="Giallo">#FFDB67</color>
+     <color name="Rosso">#FF6565</color>
+ 
++    <color name="RossoAlpha">#543940</color>
++
+ </resources>
+\ No newline at end of file
+Index: app/src/main/res/layout/sinister_alarm_popup_layout.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"wrap_content\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_gravity=\"center\"\r\n    android:background=\"@color/colorSurface\">\r\n\r\n\r\n    <ImageButton\r\n        android:id=\"@+id/imfinethanks\"\r\n        android:layout_width=\"96dp\"\r\n        android:layout_height=\"96dp\"\r\n        android:layout_marginBottom=\"32dp\"\r\n        android:background=\"@drawable/fish_conferma\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/alarm_popup_message\">\r\n\r\n    </ImageButton>\r\n\r\n    <TextView\r\n        android:id=\"@+id/alarm_popup_message\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"32dp\"\r\n        android:layout_marginTop=\"32dp\"\r\n        android:layout_marginEnd=\"32dp\"\r\n        android:layout_marginBottom=\"32dp\"\r\n        android:gravity=\"center\"\r\n        android:text=\"Hey! Tutto bene?\"\r\n        android:textColor=\"@color/Bianco\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/imfinethanks\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/countdown_time\">\r\n\r\n    </TextView>\r\n\r\n    <TextView\r\n        android:id=\"@+id/countdown_time\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"32dp\"\r\n        android:text=\"10\"\r\n        android:textColor=\"@color/Rosso\"\r\n        android:textSize=\"24dp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/alarm_popup_message\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/sinister_alarm_popup_layout.xml	(revision 5e286c261b9dd8e25769d5c7f626f616ebf8a9d3)
++++ app/src/main/res/layout/sinister_alarm_popup_layout.xml	(date 1609173657553)
+@@ -1,59 +1,63 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="wrap_content"
++    android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+-    android:layout_gravity="center"
+-    android:background="@color/colorSurface">
++    android:layout_gravity="center">
+ 
+-
+-    <ImageButton
+-        android:id="@+id/imfinethanks"
+-        android:layout_width="96dp"
+-        android:layout_height="96dp"
+-        android:layout_marginBottom="32dp"
+-        android:background="@drawable/fish_conferma"
+-        app:layout_constraintBottom_toBottomOf="parent"
++    <com.google.android.material.card.MaterialCardView
++        android:id="@+id/container_sinister"
++        app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.5"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toBottomOf="@+id/alarm_popup_message">
++        app:layout_constraintBottom_toBottomOf="parent"
++        android:layout_width="0dp"
++        app:layout_constraintWidth_percent="0.8"
++        android:layout_height="wrap_content" >
+ 
+-    </ImageButton>
+-
+-    <TextView
+-        android:id="@+id/alarm_popup_message"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_marginStart="32dp"
+-        android:layout_marginTop="32dp"
+-        android:layout_marginEnd="32dp"
+-        android:layout_marginBottom="32dp"
+-        android:gravity="center"
+-        android:text="Hey! Tutto bene?"
+-        android:textColor="@color/Bianco"
+-        android:textSize="24sp"
+-        app:layout_constraintBottom_toTopOf="@+id/imfinethanks"
+-        app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.5"
+-        app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toBottomOf="@+id/countdown_time">
+-
+-    </TextView>
++        <LinearLayout
++            android:gravity="center"
++            android:orientation="vertical"
++            android:padding="30dp"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content">
+ 
+-    <TextView
+-        android:id="@+id/countdown_time"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_marginTop="32dp"
+-        android:text="10"
+-        android:textColor="@color/Rosso"
+-        android:textSize="24dp"
+-        app:layout_constraintBottom_toTopOf="@+id/alarm_popup_message"
+-        app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.5"
+-        app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
++            <TextView
++                android:layout_marginBottom="30dp"
++                android:id="@+id/countdown_time"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="10"
++                android:textAppearance="?attr/textAppearanceHeadline5"
++                android:textColor="@color/Rosso" />
++
++            <TextView
++                android:layout_marginBottom="30dp"
++                android:id="@+id/alarm_popup_message"
++                android:textAlignment="center"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:text="Hey! Tutto bene?"
++                android:textAppearance="?attr/textAppearanceSubtitle1" />
++
++            <com.google.android.material.card.MaterialCardView
++                android:id="@+id/imfinethanks_sinister"
++                android:backgroundTint="#4081F279"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content">
++
++                <ImageView
++                    android:layout_width="30dp"
++                    android:layout_height="30dp"
++                    android:layout_margin="15dp"
++                    android:src="@drawable/fish_conferma" />
++
++            </com.google.android.material.card.MaterialCardView>
++
++        </LinearLayout>
++
++    </com.google.android.material.card.MaterialCardView>
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/sanchez/miguel/alfonso/simul/HomeFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package sanchez.miguel.alfonso.simul;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\nimport androidx.navigation.Navigation;\r\n\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.nickname;\r\nimport static sanchez.miguel.alfonso.simul.BaseActivity.prefs;\r\n\r\npublic class HomeFragment extends Fragment {\r\n\r\n    private TextView nome;\r\n\r\n    public HomeFragment() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {\r\n        // Inflate the layout for this fragment\r\n        View v = inflater.inflate(R.layout.fragment_home, container, false);\r\n\r\n        nome = v.findViewById(R.id.home_text_name);\r\n        nickname = prefs.getString(\"nickname\",\"\");\r\n        nome.setText(nickname);\r\n\r\n        v.findViewById(R.id.goto_creazionelobby).setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(getContext(), CreazioneLobbyActivity.class));\r\n\r\n            }\r\n        });\r\n        v.findViewById(R.id.goto_partecipalobby).setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(getContext(), CercaLobbyActivity.class));\r\n\r\n            }\r\n        });\r\n\r\n        return v;\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/sanchez/miguel/alfonso/simul/HomeFragment.java	(revision 5e286c261b9dd8e25769d5c7f626f616ebf8a9d3)
++++ app/src/main/java/sanchez/miguel/alfonso/simul/HomeFragment.java	(date 1609173136626)
+@@ -1,18 +1,25 @@
+ package sanchez.miguel.alfonso.simul;
+ 
++import android.animation.ArgbEvaluator;
++import android.animation.ValueAnimator;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.view.animation.Animation;
++import android.view.animation.AnimationUtils;
+ import android.widget.TextView;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
++import androidx.core.content.ContextCompat;
+ import androidx.fragment.app.Fragment;
+ import androidx.fragment.app.FragmentManager;
+ import androidx.navigation.Navigation;
+ 
++import com.google.android.material.card.MaterialCardView;
++
+ import static sanchez.miguel.alfonso.simul.BaseActivity.nickname;
+ import static sanchez.miguel.alfonso.simul.BaseActivity.prefs;
+ 
+Index: app/src/main/res/layout/activity_register.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:background=\"@drawable/main_sfondo\"\r\n    tools:context=\".RegisterActivity\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/register_go_back\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        android:layout_marginLeft=\"15dp\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:rotation=\"180\"\r\n        android:src=\"@drawable/ic_arrow_forward\" />\r\n\r\n    <TextView\r\n        android:layout_gravity=\"center_horizontal\"\r\n        style=\"?attr/textAppearanceSubtitle2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"sei nuovo!\"/>\r\n\r\n    <TextView\r\n        android:layout_marginBottom=\"20dp\"\r\n        android:layout_gravity=\"center_horizontal\"\r\n        style=\"?attr/textAppearanceHeadline6\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Crea il tuo account\" />\r\n\r\n    <androidx.constraintlayout.widget.ConstraintLayout\r\n        android:paddingTop=\"30dp\"\r\n        android:paddingBottom=\"30dp\"\r\n        android:paddingLeft=\"15dp\"\r\n        android:paddingRight=\"15dp\"\r\n        android:background=\"@drawable/bg_sezione\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\">\r\n\r\n        <LinearLayout\r\n            android:gravity=\"center_horizontal\"\r\n            android:layout_width=\"0dp\"\r\n            app:layout_constraintWidth_percent=\"0.8\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"vertical\"\r\n\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\">\r\n\r\n            <com.google.android.material.card.MaterialCardView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:backgroundTint=\"@color/darkGrey\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/user_image_input\"\r\n                    android:layout_width=\"75dp\"\r\n                    android:layout_height=\"75dp\"\r\n                    android:layout_margin=\"10dp\"\r\n                    android:backgroundTint=\"@color/darkGrey\"\r\n                    android:padding=\"12dp\"\r\n                    android:src=\"@drawable/ic_add_photo\" />\r\n\r\n            </com.google.android.material.card.MaterialCardView>\r\n\r\n            <com.google.android.material.textfield.TextInputLayout\r\n                android:id=\"@+id/textInputLayout\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginTop=\"30dp\"\r\n                android:hint=\"Inserisci il tuo Nickname\"\r\n                android:maxLength=\"16\"\r\n                android:singleLine=\"true\" >\r\n\r\n                <com.google.android.material.textfield.TextInputEditText\r\n                    android:id=\"@+id/nick\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\" />\r\n\r\n            </com.google.android.material.textfield.TextInputLayout>\r\n\r\n        </LinearLayout>\r\n\r\n        <com.google.android.material.button.MaterialButton\r\n            android:id=\"@+id/register_button\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Registrati ora\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\" />\r\n\r\n        <LinearLayout\r\n            android:id=\"@+id/linearLayout2\"\r\n            android:layout_width=\"0dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginBottom=\"20dp\"\r\n            android:gravity=\"center_vertical\"\r\n            android:orientation=\"horizontal\"\r\n            app:layout_constraintBottom_toTopOf=\"@+id/register_button\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintWidth_percent=\"0.8\">\r\n\r\n            <com.google.android.material.checkbox.MaterialCheckBox\r\n                android:id=\"@+id/checkBox\"\r\n                android:layout_width=\"32dp\"\r\n                android:layout_height=\"32dp\"\r\n                android:layout_marginRight=\"15dp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView2\"\r\n                style=\"?attr/textAppearanceCaption\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"Accetto le condizioni di utilizzo\" />\r\n\r\n        </LinearLayout>\r\n\r\n        <!--\r\n\r\n\r\n        -->\r\n\r\n    </androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_register.xml	(revision 5e286c261b9dd8e25769d5c7f626f616ebf8a9d3)
++++ app/src/main/res/layout/activity_register.xml	(date 1609163799191)
+@@ -17,7 +17,8 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:rotation="180"
+-        android:src="@drawable/ic_arrow_forward" />
++        android:src="@drawable/ic_arrow_forward"
++        app:tint="@color/primaryWhite" />
+ 
+     <TextView
+         android:layout_gravity="center_horizontal"
+@@ -27,7 +28,7 @@
+         android:text="sei nuovo!"/>
+ 
+     <TextView
+-        android:layout_marginBottom="20dp"
++        android:layout_marginBottom="30dp"
+         android:layout_gravity="center_horizontal"
+         style="?attr/textAppearanceHeadline6"
+         android:layout_width="wrap_content"
+@@ -35,24 +36,27 @@
+         android:text="Crea il tuo account" />
+ 
+     <androidx.constraintlayout.widget.ConstraintLayout
+-        android:paddingTop="30dp"
+-        android:paddingBottom="30dp"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:background="@drawable/bg_sezione"
+         android:paddingLeft="15dp"
++        android:paddingTop="30dp"
+         android:paddingRight="15dp"
+-        android:background="@drawable/bg_sezione"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent">
++        android:paddingBottom="30dp">
+ 
+         <LinearLayout
+-            android:gravity="center_horizontal"
++            android:id="@+id/linearLayout5"
+             android:layout_width="0dp"
+-            app:layout_constraintWidth_percent="0.8"
+             android:layout_height="wrap_content"
++            android:gravity="center_horizontal"
+             android:orientation="vertical"
+ 
++            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+             app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.5"
+             app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent">
++            app:layout_constraintTop_toTopOf="parent"
++            app:layout_constraintWidth_percent="0.8">
+ 
+             <com.google.android.material.card.MaterialCardView
+                 android:layout_width="wrap_content"
+@@ -77,7 +81,7 @@
+                 android:layout_marginTop="30dp"
+                 android:hint="Inserisci il tuo Nickname"
+                 android:maxLength="16"
+-                android:singleLine="true" >
++                android:singleLine="true">
+ 
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/nick"
+@@ -88,47 +92,50 @@
+ 
+         </LinearLayout>
+ 
+-        <com.google.android.material.button.MaterialButton
+-            android:id="@+id/register_button"
+-            android:layout_width="wrap_content"
++        <LinearLayout
++            android:id="@+id/linearLayout4"
++            android:layout_width="match_parent"
++            android:gravity="center"
+             android:layout_height="wrap_content"
+-            android:text="Registrati ora"
++            android:orientation="vertical"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintStart_toStartOf="parent" />
++            app:layout_constraintHorizontal_bias="0.5"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+ 
+-        <LinearLayout
+-            android:id="@+id/linearLayout2"
+-            android:layout_width="0dp"
+-            android:layout_height="wrap_content"
+-            android:layout_marginBottom="20dp"
+-            android:gravity="center_vertical"
+-            android:orientation="horizontal"
+-            app:layout_constraintBottom_toTopOf="@+id/register_button"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintWidth_percent="0.8">
++            <LinearLayout
++                android:id="@+id/linearLayout2"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_marginBottom="20dp"
++                android:gravity="center"
++                android:orientation="horizontal">
+ 
+-            <com.google.android.material.checkbox.MaterialCheckBox
+-                android:id="@+id/checkBox"
+-                android:layout_width="32dp"
+-                android:layout_height="32dp"
+-                android:layout_marginRight="15dp" />
++                <com.google.android.material.checkbox.MaterialCheckBox
++                    android:id="@+id/checkBox"
++                    android:layout_width="32dp"
++                    android:layout_height="32dp"
++                    android:layout_marginRight="15dp" />
+ 
+-            <TextView
+-                android:id="@+id/textView2"
+-                style="?attr/textAppearanceCaption"
++                <TextView
++                    android:gravity="center_vertical"
++                    android:id="@+id/textView2"
++                    style="?attr/textAppearanceCaption"
++                    android:layout_width="wrap_content"
++                    android:layout_height="32dp"
++                    android:text="Accetto le condizioni di utilizzo" />
++
++            </LinearLayout>
++
++            <com.google.android.material.button.MaterialButton
++                android:id="@+id/register_button"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:text="Accetto le condizioni di utilizzo" />
++                android:text="Registrati ora" />
+ 
+         </LinearLayout>
+ 
+-        <!--
+-
+-
+-        -->
+-
+     </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+ </LinearLayout>
+\ No newline at end of file

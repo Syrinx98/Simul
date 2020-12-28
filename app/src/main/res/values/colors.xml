@@ -16,4 +16,6 @@
     <color name="Giallo">#FFDB67</color>
     <color name="Rosso">#FF6565</color>
 
+    <color name="RossoAlpha">#543940</color>
+
 </resources>

@@ -17,7 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:rotation="180"
-        android:src="@drawable/ic_arrow_forward" />
+        android:src="@drawable/ic_arrow_forward"
+        app:tint="@color/primaryWhite" />
 
     <TextView
         android:layout_gravity="center_horizontal"
@@ -27,7 +28,7 @@
         android:text="sei nuovo!"/>
 
     <TextView
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:layout_gravity="center_horizontal"
         style="?attr/textAppearanceHeadline6"
         android:layout_width="wrap_content"
@@ -35,24 +36,27 @@
         android:text="Crea il tuo account" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:background="@drawable/bg_sezione"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_sezione"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="30dp">
 
         <LinearLayout
-            android:gravity="center_horizontal"
+            android:id="@+id/linearLayout5"
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.8"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
 
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -77,7 +81,7 @@
                 android:layout_marginTop="30dp"
                 android:hint="Inserisci il tuo Nickname"
                 android:maxLength="16"
-                android:singleLine="true" >
+                android:singleLine="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nick"
@@ -88,46 +92,49 @@
 
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/register_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="Registrati ora"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/register_button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.8">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginRight="15dp" />
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView2"
-                style="?attr/textAppearanceCaption"
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="15dp" />
+
+                <TextView
+                    android:gravity="center_vertical"
+                    android:id="@+id/textView2"
+                    style="?attr/textAppearanceCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Accetto le condizioni di utilizzo" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/register_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accetto le condizioni di utilizzo" />
+                android:text="Registrati ora" />
 
         </LinearLayout>
-
-        <!--
-
-
-        -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,9 @@
 package sanchez.miguel.alfonso.simul;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -11,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +23,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,6 +42,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -362,22 +372,40 @@ abstract class BaseActivity extends AppCompatActivity {
             dialog_is_already_opened = true;
             dialog = new Dialog(context);
             dialog.setCancelable(false);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.sinister_alarm_popup_layout);
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
 
             if (!(context instanceof Activity && ((Activity) context).isFinishing())) {
                 dialog.show();
             }
 
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            final View view = dialog.getWindow().getDecorView();
+            view.setBackgroundResource(android.R.color.transparent);
+
             // set the custom dialog components - text, image and button
-            ImageButton confirm =  dialog.findViewById(R.id.imfinethanks);
+            final MaterialCardView container_sinister = dialog.findViewById(R.id.container_sinister);
+            final MaterialCardView tappost = dialog.findViewById(R.id.imfinethanks_sinister);
             TextView t = dialog.findViewById(R.id.alarm_popup_message);
             final TextView time = dialog.findViewById(R.id.countdown_time);
 
+            Animation pulse = AnimationUtils.loadAnimation(context, R.anim.pulse_sinister);
+            int colorFrom = ContextCompat.getColor(context, R.color.colorSurface);
+            int colorTo = ContextCompat.getColor(context, R.color.RossoAlpha);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(2000); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    container_sinister.setCardBackgroundColor((int) animator.getAnimatedValue());
+                }
+            });
+            colorAnimation.setRepeatCount(20);
+            container_sinister.startAnimation(pulse);
+            colorAnimation.start();
+
             t.setText("Hey!\nTutto ok?");
-            confirm.setOnClickListener(new View.OnClickListener() {
+
+            tappost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     close_dialog();
@@ -409,7 +437,6 @@ abstract class BaseActivity extends AppCompatActivity {
                 }
             };
 
-
             alarm_countdown.start();
         }
     }
@@ -439,8 +466,6 @@ abstract class BaseActivity extends AppCompatActivity {
         ArrayList<String> parts = mySmsManager.divideMessage(message);
         mySmsManager.sendMultipartTextMessage(number,null, parts, null, null);
     }
-
-
 
 }
 
