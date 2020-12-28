@@ -205,12 +205,10 @@ abstract class BaseActivity extends AppCompatActivity {
                         if (dataSnapshot.hasChild(nickname)) {
                             if (!TextUtils.isEmpty(nickname)) {
                                 Toast.makeText(context, "Il nickname scelto è già presente", Toast.LENGTH_SHORT).show();
-                                //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
                                 //Basta che modifichi i file drawable
                                 nick_editext.setBackgroundResource(R.drawable.fish_red_stroke);
                             }
                         } else {
-                            //Todo : caso in cui il nickname vada bene, modificare per conformarlo a quello che hai inserito tu @Martin
                             //Basta che modifichi i file drawable 
                             nick_editext.setBackgroundResource(R.drawable.fish_green_stroke);
                         }

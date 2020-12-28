@@ -532,7 +532,6 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
     public void onSensorChanged(SensorEvent event) {
         DecimalFormat df2 = new DecimalFormat("#.##");
         double normalizzato = Math.sqrt(Math.pow(event.values[0], 2) + Math.pow(event.values[1], 2) + Math.pow(event.values[2], 2));
-        //todo normalizzato attualmente a 50
 
         Log.v("LobbyPartecipanteActivity", "valori accelerometro " + normalizzato);
 
@@ -541,8 +540,13 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             if (check_velocity_anomalies(nCurrentSpeed)) {
                 prendi_user_id_attuale();
 
-
-                pop_alarm_possible_sinister(LobbyPartecipanteActivity.this, creatore_lobby, current_user_id,currentBestLocation);
+                //la location potrebbe essere null
+                if (currentBestLocation != null){
+                    pop_alarm_possible_sinister(LobbyPartecipanteActivity.this, creatore_lobby, current_user_id,currentBestLocation);
+                }
+                else{
+                    Toast.makeText(LobbyPartecipanteActivity.this,"Il GPS non è stato inizializzato correttamente,attendi qualche secondo o riavvia la stanza",Toast.LENGTH_SHORT).show();
+                }
             }
         }
 

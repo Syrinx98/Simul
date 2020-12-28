@@ -163,11 +163,8 @@ public class MainActivity extends BaseActivity {
                     data_creazione_account = Objects.requireNonNull(dataSnapshot.child("data").getValue()).toString();
                     nickname = Objects.requireNonNull(dataSnapshot.child("nickname").getValue()).toString();
                     email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
-                    //todo
-                    /*
                     angel_name = Objects.requireNonNull(dataSnapshot.child("guardian_angel_name").getValue()).toString();
                     angel_reference = Objects.requireNonNull(dataSnapshot.child("guardian_angel_reference").getValue()).toString();
-                    */
                     editor.putString("uid",current_user_id);
                     editor.putString("immagine",link_immmagine_dentro_db);
                     editor.putString("data_creazione",data_creazione_account);
