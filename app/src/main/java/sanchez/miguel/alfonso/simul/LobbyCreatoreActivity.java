@@ -508,10 +508,6 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
     }
 
 
-
-
-
-
     private void updateSpeed(CLocation location){
 
         if(location != null){
@@ -531,7 +527,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         else{
 
             //caso miglia orarie, ma buttiamo su solo miles per hour e la visualizzazione avverrà a seconda di che metric units starò usando
-            //todo guardare questa cosa
+
         }
     }
 
@@ -556,23 +552,28 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
     public void onSensorChanged(SensorEvent event) {
         DecimalFormat df2 = new DecimalFormat("#.##");
         double normalizzato = Math.sqrt(Math.pow(event.values[0],2)+Math.pow(event.values[1],2)+Math.pow(event.values[2],2));
-        //todo check su normalizzato, teoricamente a valori normali è 9.81, valutare quante accelerazioni di gravità di servono
-        //todo per il trigger
 
         if(check_accelerometer_anomalies(normalizzato)){
 
             if (check_velocity_anomalies(nCurrentSpeed)){
                 prendi_user_id_attuale();
-                pop_alarm_possible_sinister(LobbyCreatoreActivity.this,current_user_id,current_user_id,currentBestLocation);
+
+
+                //la location potrebbe essere null
+                if (currentBestLocation != null){
+                    pop_alarm_possible_sinister(LobbyCreatoreActivity.this,current_user_id,current_user_id,currentBestLocation);
+                }
+                else{
+                    Toast.makeText(LobbyCreatoreActivity.this,"Il GPS non è stato inizializzato correttamente,attendi qualche secondo o riavvia la stanza",Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
 
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
 
     private Location getLastBestLocation() {
