@@ -22,7 +22,7 @@ android {
             //FISH
             //storeFile file("C:\\Users\\alber\\Desktop\\Simul.jks")
             //Todo : controllare sempre di sostituire questo, scrivete il vostro qui sopra cosi ogni volta non dobbiamo cercare il percorso nella cartella
-            //storeFile file("C:\\Users\\Martin\\Desktop\\RobaIngSw\\Simul.jks")
+            //storeFile file("C:\\Users\\Martin\\Desktop\\RobaIngSw\\Simul.jks") gay
             storePassword "12345678"
             keyAlias "key1"
             keyPassword "12345678"
