@@ -123,8 +123,10 @@
                     android:id="@+id/textView2"
                     style="?attr/textAppearanceCaption"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Accetto le condizioni di utilizzo" />
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="Accetta le condizioni di utilizzo\nhttps://sites.google.com/stud.unive.it/simul/condizioni-duso?authuser=2" />
 
             </LinearLayout>
 

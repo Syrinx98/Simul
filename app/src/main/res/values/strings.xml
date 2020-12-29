@@ -13,4 +13,5 @@
     <string name="text_id_stanza_number">00000000</string>
     <string name="text_destinazione">Destinazione scelta</string>
     <string name="text_velocita">0km/h</string>
+    <string name="agree_terms_privacy"><a href="https://sites.google.com/stud.unive.it/simul/condizioni-duso?authuser=2">Accetta le condizioni di utilizzo</a></string>
 </resources>

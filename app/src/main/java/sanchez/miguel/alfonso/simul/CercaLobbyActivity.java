@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +43,13 @@ public class CercaLobbyActivity extends BaseActivity {
         //Resetto il creatore della lobby nella sharedpreferences per evitare bug
         editor.putString("creatore_lobby","nessuno");
         editor.apply();
+
+        findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

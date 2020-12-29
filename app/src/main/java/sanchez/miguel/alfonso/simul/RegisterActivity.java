@@ -1,7 +1,6 @@
 package sanchez.miguel.alfonso.simul;
 
 import androidx.annotation.Nullable;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +12,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
 import java.util.Objects;
 
 public class RegisterActivity extends BaseActivity {

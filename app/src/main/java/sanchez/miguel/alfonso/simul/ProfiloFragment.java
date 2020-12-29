@@ -3,8 +3,10 @@ package sanchez.miguel.alfonso.simul;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,6 +142,8 @@ public class ProfiloFragment extends BaseFragment {
 
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 
 
     protected void initilize_google_variables(){

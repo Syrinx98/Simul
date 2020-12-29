@@ -453,7 +453,7 @@ abstract class BaseActivity extends AppCompatActivity {
         RoomsRef.child(uid_creatore).child("partecipanti").child(uid_utente).child("participant_state").setValue(state).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
+                //Se è completato allora non ho bisogno di fare controlli
             }
         });
     }

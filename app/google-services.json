@@ -15,19 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "436100610708-p5kr8vgqdp27ru9cjmijeolv8dm2ladj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "sanchez.miguel.alfonso.simul",
-            "certificate_hash": "03271467964f1565ed3fd1d86b75373967bab0a4"
-          }
-        },
-        {
           "client_id": "436100610708-alahcvhefjqp6rdrvtnnc298negfckgh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "sanchez.miguel.alfonso.simul",
             "certificate_hash": "6e077ec42ffc669ebfa76402c6b0967814bad3d2"
+          }
+        },
+        {
+          "client_id": "436100610708-bles9mri39lg5jgp3i4lbjmond91vuiu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sanchez.miguel.alfonso.simul",
+            "certificate_hash": "20fcf1eb267eed6a1073344b1681d5b6108668f7"
+          }
+        },
+        {
+          "client_id": "436100610708-p5kr8vgqdp27ru9cjmijeolv8dm2ladj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sanchez.miguel.alfonso.simul",
+            "certificate_hash": "03271467964f1565ed3fd1d86b75373967bab0a4"
           }
         },
         {
