@@ -86,7 +86,10 @@ public class CercaLobbyActivity extends BaseActivity {
                 for(DataSnapshot data: snapshot.getChildren()){
                     String key=data.getKey();
                     Log.v("CercaLobby", "creatore : " + key);
+                    String destination = data.child("destinazione").getValue().toString();
                     editor.putString("creatore_lobby",key);
+                    editor.putString("room_id",s);
+                    editor.putString("destinazione_room",destination);
                     editor.apply();
                     trovato = true;
 

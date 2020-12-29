@@ -44,10 +44,10 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyPartecipanteActivity extends BaseActivity implements LocationListener, SensorEventListener {
 
-    TextView creator_nickname, destination_chosen, velocita_utente_textview;
+    TextView creator_nickname, destination_chosen, velocita_utente_textview,room_id_textview;
     ImageView creator_img;
 
-    String creatore_lobby;
+    String creatore_lobby,room_id;
     RecyclerView persone_lobby;
 
     //variabili Stati
@@ -80,6 +80,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
 
         creatore_lobby = prefs.getString("creatore_lobby", "nessuno");
+        room_id = prefs.getString("room_id","00000000");
 
         //Bindings
         //(cardview)
@@ -90,6 +91,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
 
         destination_chosen = findViewById(R.id.chosen_destination);
         persone_lobby = findViewById(R.id.lista_utenti_lobby);
+        room_id_textview = findViewById(R.id.chosen_id);
 
         cardview_bottoni_stati = findViewById(R.id.cardview_bottoni_stati);
         segnala_stato_btn = findViewById(R.id.segnala_stato_btn);
@@ -109,6 +111,7 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
         //Settaggio textview
         creator_nickname.setText(prefs.getString("nickname", "Unknown"));
         destination_chosen.setText(prefs.getString("destinazione_room", "Nessuna"));
+        room_id_textview.setText(room_id);
 
         Picasso.get()
                 .load(prefs.getString("immagine", "-"))
