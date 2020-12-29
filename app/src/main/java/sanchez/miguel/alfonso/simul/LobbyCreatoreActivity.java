@@ -461,6 +461,12 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
     private void states_disappear(){
         cardview_bottoni_stati.setVisibility(View.GONE);
+        partito_btn.setVisibility(View.GONE);
+        arrivato_btn.setVisibility(View.GONE);
+        pausa_rifornimenti_btn.setVisibility(View.GONE);
+        traffico_btn.setVisibility(View.GONE);
+        problemi_auto_bnt.setVisibility(View.GONE);
+        emergenza_btn.setVisibility(View.GONE);
         partito_btn.setEnabled(false);
         arrivato_btn.setEnabled(false);
         pausa_rifornimenti_btn.setEnabled(false);
