@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -31,7 +30,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
@@ -39,11 +37,9 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
-
 import java.text.DecimalFormat;
 import java.util.Formatter;
 import java.util.Locale;
-
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyPartecipanteActivity extends BaseActivity implements LocationListener, SensorEventListener {

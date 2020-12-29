@@ -23,7 +23,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,11 +37,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
-
 import java.text.DecimalFormat;
 import java.util.Formatter;
 import java.util.Locale;
-
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class LobbyCreatoreActivity extends BaseActivity implements LocationListener, SensorEventListener {
@@ -557,7 +554,6 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
 
             if (check_velocity_anomalies(nCurrentSpeed)){
                 prendi_user_id_attuale();
-
 
                 //la location potrebbe essere null
                 if (currentBestLocation != null){
