@@ -130,6 +130,13 @@ public class ProfiloFragment extends BaseFragment {
             }
         });
 
+        view.findViewById(R.id.modifica_foto_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Work in Progress",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         profilo_crea_angelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

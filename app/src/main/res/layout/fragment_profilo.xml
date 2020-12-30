@@ -56,6 +56,7 @@
                     android:visibility="visible" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/modifica_foto_button"
                     style="@style/my_outlined_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
