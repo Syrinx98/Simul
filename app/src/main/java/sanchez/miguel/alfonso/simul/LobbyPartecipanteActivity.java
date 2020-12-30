@@ -150,6 +150,14 @@ public class LobbyPartecipanteActivity extends BaseActivity implements LocationL
             currentBestLocation = getLastBestLocation();
         }
 
+        sms_permission();
+
+    }
+
+    private void sms_permission(){
+        if (ContextCompat.checkSelfPermission(LobbyPartecipanteActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[] { Manifest.permission.SEND_SMS}, 1);
+        }
     }
 
     private void states_button_listener(){

@@ -40,6 +40,8 @@ public class CercaLobbyActivity extends BaseActivity {
         cerca_edit_text.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         editext_listener();
 
+
+
         //Resetto il creatore della lobby nella sharedpreferences per evitare bug
         editor.putString("creatore_lobby","nessuno");
         editor.apply();

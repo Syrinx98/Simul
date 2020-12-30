@@ -147,7 +147,7 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
         states_button_listener();
         initialize_accelerometer_and_gps();
 
-        //Richiedo permessi per i messaggi
+        //Richiedo permessi per il gps
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -155,6 +155,16 @@ public class LobbyCreatoreActivity extends BaseActivity implements LocationListe
             currentBestLocation = getLastBestLocation();
         }
 
+        sms_permission();
+
+
+    }
+
+
+    private void sms_permission(){
+        if (ContextCompat.checkSelfPermission(LobbyCreatoreActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[] { Manifest.permission.SEND_SMS}, 1);
+        }
     }
 
 

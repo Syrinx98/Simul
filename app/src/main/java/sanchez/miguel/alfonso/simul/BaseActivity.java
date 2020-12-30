@@ -431,7 +431,7 @@ abstract class BaseActivity extends AppCompatActivity {
                     String time = current_location.getTime() + "";
                     Log.v("CIAO","longitude "+ longitude + "\nlatitude " + latitude + "\naltitude " + altitude + "\nspeed " + speed + "\nora " + time);
 
-                    String message = "Simul Guardian Angel System\nIncidente rilevato a questa posizione\n" + "Longitudine "+ longitude + "\nLatitudine " + latitude + "\nAltitudine " + altitude + "\nVelocità " + speed + "\nLINK\n" + location_format;
+                    String message = "Simul Guardian Angel System\n\nIncidente rilevato a questa posizione:\n" + "Longitudine: "+ longitude + "\nLatitudine: " + latitude + "\nAltitudine: " + altitude + "\nVelocità al momento dell'impatto: " + speed + "\n\nLink Maps\n" + location_format;
                     send_sms(prefs.getString("angel_reference","Non ancora impostato"),message);
                     send_state_to_room(uid_creatore,uid_utente,EMERGENZA_DETECTED);
                 }
