@@ -8,7 +8,7 @@ android {
         applicationId "sanchez.miguel.alfonso.simul"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 2
+        versionCode 3
         versionName "1.0guapo"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
